@@ -1,4 +1,4 @@
-cat << 'EOF' > README.md
+
 # UniFind — College Discovery & Admission Prediction Platform
 
 UniFind is a high-performance, strictly typed frontend application engineered to help students seamlessly discover, analyze, compare, and predict admissions to premier educational institutions. Built with modern web performance strategies, it demonstrates clean layout state orchestration, asynchronous simulation, and responsive UX design patterns.
