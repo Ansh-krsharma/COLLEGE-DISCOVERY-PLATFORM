@@ -1,5 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import Overview from "../components/college/Overview";
+import Courses from "../components/college/Courses";
+import Placements from "../components/college/Placements";
+import Reviews from "../components/college/Reviews";
 import api from "../services/api";
 
 export default function CollegeDetail() {

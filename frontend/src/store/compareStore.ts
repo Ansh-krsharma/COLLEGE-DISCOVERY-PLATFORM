@@ -3,9 +3,14 @@ import { create } from "zustand";
 interface College {
   id: string;
   name: string;
+  location: string;
+  fees: number;
+  rating: number;
+  averagePackage: number;
+  highestPackage: number;
 }
 
-interface CompareStore {
+interface CompareState {
   colleges: College[];
 
   addCollege: (
@@ -15,18 +20,48 @@ interface CompareStore {
   removeCollege: (
     id: string
   ) => void;
+
+  clearCompare: () => void;
 }
 
-export const useCompareStore = create<CompareStore>((set) => ({
-  colleges: [],
+export const useCompareStore =
+  create<CompareState>((set) => ({
+    colleges: [],
 
-  addCollege: (college) =>
-    set((state) => ({
-      colleges: [...state.colleges, college].slice(0, 3),
-    })),
+    addCollege: (college) =>
+      set((state) => {
+        const exists =
+          state.colleges.find(
+            (c) =>
+              c.id === college.id
+          );
 
-  removeCollege: (id) =>
-    set((state) => ({
-      colleges: state.colleges.filter((c) => c.id !== id),
-    })),
-}));
+        if (exists)
+          return state;
+
+        if (
+          state.colleges.length >= 3
+        )
+          return state;
+
+        return {
+          colleges: [
+            ...state.colleges,
+            college,
+          ],
+        };
+      }),
+
+    removeCollege: (id) =>
+      set((state) => ({
+        colleges:
+          state.colleges.filter(
+            (c) => c.id !== id
+          ),
+      })),
+
+    clearCompare: () =>
+      set({
+        colleges: [],
+      }),
+  }));

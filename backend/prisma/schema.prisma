@@ -1,54 +1,15 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-model User {
-  id        String @id @default(uuid())
-  name      String
-  email     String @unique
-  password  String
-
-  savedColleges SavedCollege[]
-
-  createdAt DateTime @default(now())
-}
-
-model College {
-  id              String @id @default(uuid())
-  name            String
-  location        String
-  fees            Int
-  rating          Float
-
-  averagePackage  Int
-  highestPackage  Int
-
-  overview        String
-
-  courses Course[]
-
-  reviews Review[]
-
-  savedBy SavedCollege[]
-
-  createdAt DateTime @default(now())
-}
-
 model Course {
   id        String @id @default(uuid())
-
   name      String
-
   duration  String
 
   collegeId String
 
-  college College @relation(fields: [collegeId], references: [id])
+  college College
+    @relation(
+      fields:[collegeId],
+      references:[id]
+    )
 }
 
 model Review {
@@ -62,19 +23,9 @@ model Review {
 
   collegeId String
 
-  college College @relation(fields: [collegeId], references: [id])
-}
-
-model SavedCollege {
-  id        String @id @default(uuid())
-
-  userId    String
-
-  collegeId String
-
-  user User @relation(fields:[userId], references:[id])
-
-  college College @relation(fields:[collegeId], references:[id])
-
-  @@unique([userId, collegeId])
+  college College
+    @relation(
+      fields:[collegeId],
+      references:[id]
+    )
 }

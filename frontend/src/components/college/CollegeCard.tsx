@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { College } from "../../types/college";
+import CompareButton from "../compare/CompareButton";
 
 interface Props {
   college: College;
@@ -36,6 +37,9 @@ export default function CollegeCard({
       >
         View Details
       </Link>
+      <CompareButton
+  college={college}
+/>
     </div>
   );
 }
