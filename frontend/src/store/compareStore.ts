@@ -8,9 +8,13 @@ interface College {
 interface CompareStore {
   colleges: College[];
 
-  addCollege: (college: College) => void;
+  addCollege: (
+    college: College
+  ) => void;
 
-  removeCollege: (id: string) => void;
+  removeCollege: (
+    id: string
+  ) => void;
 }
 
 export const useCompareStore = create<CompareStore>((set) => ({
