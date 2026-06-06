@@ -1,8 +1,23 @@
-<input
-  type="text"
-  value={search}
-  onChange={(e) =>
-    setSearch(e.target.value)
-  }
-  placeholder="Search colleges"
-/>
+interface Props {
+  value: string;
+
+  onChange: (
+    value: string
+  ) => void;
+}
+
+export default function CollegeSearch({
+  value,
+  onChange,
+}: Props) {
+  return (
+    <input
+      value={value}
+      onChange={(e) =>
+        onChange(e.target.value)
+      }
+      placeholder="Search colleges..."
+      className="w-full border rounded-lg p-3"
+    />
+  );
+}

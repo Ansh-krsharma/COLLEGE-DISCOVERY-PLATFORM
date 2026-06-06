@@ -17,6 +17,14 @@ app.get("/", (_, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
+const collegeRoutes =
+  require(
+    "./routes/collegeRoutes"
+  );
+  app.use(
+  "/api/colleges",
+  collegeRoutes
+);
 
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);

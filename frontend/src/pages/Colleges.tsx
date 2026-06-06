@@ -1,45 +1,97 @@
+import { useState } from "react";
+
 import { useQuery } from "@tanstack/react-query";
-import { api } from "../services/api";
+
+import api from "../services/api";
+
 import CollegeCard from "../components/college/CollegeCard";
 
+import CollegeSearch from "../components/college/CollegeSearch";
+
+import CollegeFilter from "../components/college/CollegeFilter";
+
+import useDebounce from "../hooks/useDebounce";
+
 export default function Colleges() {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["colleges"],
-    queryFn: async () => {
-      const res = await api.get("/colleges");
-      return res.data;
-    },
-  });
+  const [search, setSearch] =
+    useState("");
 
-  if (isLoading) {
+  const [location, setLocation] =
+    useState("");
+
+  const [rating, setRating] =
+    useState("");
+
+  const debouncedSearch =
+    useDebounce(search);
+
+  const { data, isLoading } =
+    useQuery({
+      queryKey: [
+        "colleges",
+        debouncedSearch,
+        location,
+        rating,
+      ],
+
+      queryFn: async () => {
+        const res =
+          await api.get(
+            "/colleges",
+            {
+              params: {
+                search:
+                  debouncedSearch,
+                location,
+                rating,
+              },
+            }
+          );
+
+        return res.data;
+      },
+    });
+
+  if (isLoading)
     return (
-      <div className="p-10 text-center">
-        Loading colleges...
+      <div className="p-10">
+        Loading...
       </div>
     );
-  }
-
-  if (error) {
-    return (
-      <div className="p-10 text-center text-red-500">
-        Failed to load colleges
-      </div>
-    );
-  }
 
   return (
     <div className="max-w-7xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">
-        Colleges
-      </h1>
+      <CollegeSearch
+        value={search}
+        onChange={setSearch}
+      />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data?.map((college: any) => (
-          <CollegeCard
-            key={college.id}
-            college={college}
-          />
-        ))}
+      <div className="grid lg:grid-cols-4 gap-6 mt-6">
+        <CollegeFilter
+          location={location}
+          rating={rating}
+          setLocation={
+            setLocation
+          }
+          setRating={setRating}
+        />
+
+        <div className="lg:col-span-3">
+          <div className="grid md:grid-cols-2 gap-6">
+            {data?.map(
+              (college: any) => (
+                <CollegeCard
+                  key={
+                    college.id
+                  }
+                  college={
+                    college
+                  }
+                />
+              )
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
