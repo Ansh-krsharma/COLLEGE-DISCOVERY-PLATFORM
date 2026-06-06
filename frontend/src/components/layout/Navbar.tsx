@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useCompareStore } from "../../store/compareStore";
+import { useSavedStore } from "../../store/savedStore";
 
 export default function Navbar() {
   return (
@@ -24,8 +25,10 @@ export default function Navbar() {
 </Link>
 
           <Link to="/profile/saved">
-            Saved
-          </Link>
+  Saved (
+  {savedCount}
+  )
+</Link>
 
           <Link to="/login">
             Login

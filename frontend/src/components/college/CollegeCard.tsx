@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { College } from "../../types/college";
 import CompareButton from "../compare/CompareButton";
+import SaveButton from "../saved/SaveButton";
 
 interface Props {
   college: College;
@@ -39,6 +40,9 @@ export default function CollegeCard({
       </Link>
       <CompareButton
   college={college}
+/>
+<SaveButton
+  id={college.id}
 />
     </div>
   );

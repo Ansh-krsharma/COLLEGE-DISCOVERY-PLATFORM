@@ -1,6 +1,7 @@
 import {
   createBrowserRouter,
 } from "react-router-dom";
+import ProtectedRoute from "../components/auth/ProtectedRoute";
 
 import Home from "../pages/Home";
 import Colleges from "../pages/Colleges";
@@ -43,7 +44,14 @@ export const router =
     },
 
     {
-      path: "/profile/saved",
-      element: <Saved />,
-    },
+      {
+  path: "/profile/saved",
+
+  element: (
+    <ProtectedRoute>
+      <Saved />
+    </ProtectedRoute>
+  ),
+},
+}
   ]);
