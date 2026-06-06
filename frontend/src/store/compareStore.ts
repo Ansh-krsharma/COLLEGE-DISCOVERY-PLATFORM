@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface College {
   id: string;
@@ -10,6 +11,14 @@ interface College {
   highestPackage: number;
 }
 
+persist(
+  (set) => ({
+     ...
+  }),
+  {
+    name: "compare-storage",
+  }
+)
 interface CompareState {
   colleges: College[];
 

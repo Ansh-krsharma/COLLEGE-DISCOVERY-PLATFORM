@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useCompareStore } from "../../store/compareStore";
 
 export default function Navbar() {
   return (
@@ -17,8 +18,10 @@ export default function Navbar() {
           </Link>
 
           <Link to="/compare">
-            Compare
-          </Link>
+  Compare (
+  {colleges.length}
+  )
+</Link>
 
           <Link to="/profile/saved">
             Saved
