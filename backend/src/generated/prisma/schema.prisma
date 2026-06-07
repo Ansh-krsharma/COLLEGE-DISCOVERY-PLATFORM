@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma" // optional, default is node_modules/@prisma/client
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Course {
+  id       String @id @default(uuid())
+  name     String
+  duration String
+
+  collegeId String
+  college   College @relation(fields: [collegeId], references: [id])
+}
+
+model Student {
+  id        String  @id @default(uuid())
+  name      String
+  collegeId String
+  college   College @relation(fields: [collegeId], references: [id])
+}
+
+model Review {
+  id      String @id @default(uuid())
+  title   String
+  comment String
+  rating  Float
+
+  collegeId String
+  college   College @relation(fields: [collegeId], references: [id])
+}
+
+model College {
+  id       String  @id @default(uuid())
+  name     String
+  location String?
+
+  courses  Course[]
+  students Student[]
+  reviews  Review[]
+}
