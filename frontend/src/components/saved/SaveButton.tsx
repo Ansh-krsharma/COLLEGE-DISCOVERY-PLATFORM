@@ -21,35 +21,19 @@ export default function SaveButton({
         state.isSaved(id)
     );
 
-  return (
-    <button
-      onClick={() =>
-        toggleSaved(id)
-      }
-      className="border rounded-lg p-2 w-full mt-2"
-    >
-      if (isSaved) {
-  toast.success(
-    "Removed from saved colleges"
-  );
-} else {
-  toast.success(
-    "Added to saved colleges"
-  );
-}
-      <Heart
-        fill={
-          isSaved
-            ? "red"
-            : "none"
-        }
-      />
+  const handleClick = () => {
+    toggleSaved(id);
+    if (isSaved) {
+      toast.success("Removed from saved colleges");
+    } else {
+      toast.success("Added to saved colleges");
+    }
+  };
 
-      <span className="ml-2">
-        {isSaved
-          ? "Saved"
-          : "Save"}
-      </span>
+  return (
+    <button onClick={handleClick} className="border rounded-lg p-2 w-full mt-2">
+      <Heart fill={isSaved ? "red" : "none"} />
+      <span className="ml-2">{isSaved ? "Saved" : "Save"}</span>
     </button>
   );
 }

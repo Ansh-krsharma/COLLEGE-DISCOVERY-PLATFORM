@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface SavedStore {
+  savedCount: any;
   savedIds: string[];
 
   toggleSaved: (
@@ -18,6 +19,7 @@ export const useSavedStore =
     persist(
       (set, get) => ({
         savedIds: [],
+        savedCount: 0,
 
         toggleSaved: (id) => {
           const saved =
@@ -26,19 +28,22 @@ export const useSavedStore =
           if (
             saved.includes(id)
           ) {
+            const updatedSaved = saved.filter(
+              (item) =>
+                item !== id
+            );
             set({
-              savedIds:
-                saved.filter(
-                  (item) =>
-                    item !== id
-                ),
+              savedIds: updatedSaved,
+              savedCount: updatedSaved.length,
             });
           } else {
+            const updatedSaved = [
+              ...saved,
+              id,
+            ];
             set({
-              savedIds: [
-                ...saved,
-                id,
-              ],
+              savedIds: updatedSaved,
+              savedCount: updatedSaved.length,
             });
           }
         },

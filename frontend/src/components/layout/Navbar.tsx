@@ -3,6 +3,9 @@ import { useCompareStore } from "../../store/compareStore";
 import { useSavedStore } from "../../store/savedStore";
 import ThemeToggle from "./ThemeToggle";
 export default function Navbar() {
+  const colleges = useCompareStore((state) => state.colleges);
+  const savedCount = useSavedStore((state) => state.savedCount);
+
   return (
     <nav className="bg-white shadow">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
