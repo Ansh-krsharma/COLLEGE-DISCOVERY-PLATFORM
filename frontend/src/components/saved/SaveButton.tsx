@@ -1,7 +1,5 @@
-import {
-  Heart,
-} from "lucide-react";
-
+import {Heart,} from "lucide-react";
+import toast from "react-hot-toast";
 import { useSavedStore } from "../../store/savedStore";
 
 interface Props {
@@ -16,7 +14,7 @@ export default function SaveButton({
       (state) =>
         state.toggleSaved
     );
-
+  
   const isSaved =
     useSavedStore(
       (state) =>
@@ -30,6 +28,15 @@ export default function SaveButton({
       }
       className="border rounded-lg p-2 w-full mt-2"
     >
+      if (isSaved) {
+  toast.success(
+    "Removed from saved colleges"
+  );
+} else {
+  toast.success(
+    "Added to saved colleges"
+  );
+}
       <Heart
         fill={
           isSaved

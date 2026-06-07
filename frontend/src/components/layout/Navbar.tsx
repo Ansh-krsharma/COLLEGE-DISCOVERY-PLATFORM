@@ -12,8 +12,11 @@ export default function Navbar() {
         >
           CollegeHub
         </Link>
-
+        <div className="hidden md:flex gap-4">  </div>
         <div className="flex gap-4">
+          <div className="md:hidden">
+  Menu
+</div>
           <Link to="/colleges">
             Colleges
           </Link>
