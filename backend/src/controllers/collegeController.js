@@ -1,22 +1,21 @@
-const {
-  PrismaClient,
-} = require(
-  "@prisma/client"
-);
+exports.getColleges = async (
+  req,
+  res
+) => {
+  try {
+    const page =
+      Number(req.query.page) || 1;
 
-const prisma =
-  new PrismaClient();
+    const limit = 12;
 
-exports.getColleges =
-  async (
-    req,
-    res
-  ) => {
-    const {
-      search,
-      location,
-      rating,
-    } = req.query;
+    const search =
+      req.query.search || "";
+
+    const location =
+      req.query.location || "";
+
+    const rating =
+      req.query.rating;
 
     const colleges =
       await prisma.college.findMany({
@@ -25,7 +24,8 @@ exports.getColleges =
             ? {
                 contains:
                   search,
-                mode: "insensitive",
+                mode:
+                  "insensitive",
               }
             : undefined,
 
@@ -41,29 +41,26 @@ exports.getColleges =
               }
             : undefined,
         },
+
+        skip:
+          (page - 1) * limit,
+
+        take: limit,
       });
 
-    res.json(colleges);
-  };
+    res.json({
+      colleges,
 
-exports.getCollege =
-  async (
-    req,
-    res
-  ) => {
-    const college =
-      await prisma.college.findUnique(
-        {
-          where: {
-            id: req.params.id,
-          },
-
-          include: {
-            courses: true,
-            reviews: true,
-          },
-        }
-      );
-
-    res.json(college);
-  };
+      nextPage:
+        colleges.length ===
+        limit
+          ? page + 1
+          : null,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message:
+        error.message,
+    });
+  }
+};

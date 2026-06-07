@@ -1,13 +1,10 @@
 import { useState } from "react";
-
-import { useQuery } from "@tanstack/react-query";
-
+import useInfiniteColleges from "../hooks/useInfiniteColleges";
+import { useInView } from "react-intersection-observer";
+import {useEffect,} from "react";
 import api from "../services/api";
-
 import CollegeCard from "../components/college/CollegeCard";
-
 import CollegeSearch from "../components/college/CollegeSearch";
-
 import CollegeFilter from "../components/college/CollegeFilter";
 
 import useDebounce from "../hooks/useDebounce";
@@ -15,7 +12,17 @@ import useDebounce from "../hooks/useDebounce";
 export default function Colleges() {
   const [search, setSearch] =
     useState("");
-
+  
+  const {
+  data,
+  fetchNextPage,
+  hasNextPage,
+  isLoading,
+} = useInfiniteColleges(
+  debouncedSearch,
+  location,
+  rating
+);
   const [location, setLocation] =
     useState("");
 
@@ -24,7 +31,20 @@ export default function Colleges() {
 
   const debouncedSearch =
     useDebounce(search);
-
+  const { ref, inView } =
+    useInView(useEffect(() => {
+  if (
+    inView &&
+    hasNextPage
+  ) {
+    fetchNextPage();
+  }
+}, [
+  inView,
+  fetchNextPage,
+  hasNextPage,
+]););
+    
   const { data, isLoading } =
     useQuery({
       queryKey: [
@@ -78,15 +98,23 @@ export default function Colleges() {
 
         <div className="lg:col-span-3">
           <div className="grid md:grid-cols-2 gap-6">
-            {data?.map(
-              (college: any) => (
-                <CollegeCard
-                  key={
-                    college.id
-                  }
-                  college={
-                    college
-                  }
+            data?.pages.map(
+  (page) =>
+    page.colleges.map(
+      (
+        college: any
+      ) => (
+        <CollegeCard
+          key={
+            college.id
+          }
+          college={
+            college
+          }
+        />
+      )
+    )
+)
                 />
               )
             )}
@@ -94,5 +122,13 @@ export default function Colleges() {
         </div>
       </div>
     </div>
+    <div
+  ref={ref}
+  className="h-20 flex items-center justify-center"
+>
+  {hasNextPage
+    ? "Loading More..."
+    : "No More Colleges"}
+</div>
   );
 }

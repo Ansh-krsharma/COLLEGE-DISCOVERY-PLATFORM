@@ -26,6 +26,11 @@ const collegeRoutes =
   collegeRoutes
 );
 
+app.use(
+  "/api/saved",
+  savedRoutes
+);
+
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
 });
