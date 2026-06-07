@@ -5,6 +5,7 @@ import Courses from "../components/college/Courses";
 import Placements from "../components/college/Placements";
 import Reviews from "../components/college/Reviews";
 import api from "../services/api";
+import CollegeDetailSkeleton from "../components/college/CollegeDetailSkeleton";
 
 export default function CollegeDetail() {
   const { id } = useParams();
@@ -22,12 +23,10 @@ export default function CollegeDetail() {
   });
 
   if (isLoading) {
-    return (
-      <div className="p-10">
-        Loading...
-      </div>
-    );
-  }
+  return (
+    <CollegeDetailSkeleton />
+  );
+}
 
   return (
     <div className="max-w-6xl mx-auto p-6">

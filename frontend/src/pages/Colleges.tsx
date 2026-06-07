@@ -6,7 +6,7 @@ import api from "../services/api";
 import CollegeCard from "../components/college/CollegeCard";
 import CollegeSearch from "../components/college/CollegeSearch";
 import CollegeFilter from "../components/college/CollegeFilter";
-
+import CollegeSkeleton from "../components/college/CollegeSkeleton";
 import useDebounce from "../hooks/useDebounce";
 
 export default function Colleges() {
@@ -72,12 +72,19 @@ export default function Colleges() {
       },
     });
 
-  if (isLoading)
-    return (
-      <div className="p-10">
-        Loading...
-      </div>
-    );
+  if (isLoading) {
+  return (
+    <div className="grid md:grid-cols-3 gap-6 p-6">
+      {[...Array(6)].map(
+        (_, index) => (
+          <CollegeSkeleton
+            key={index}
+          />
+        )
+      )}
+    </div>
+  );
+}
 
   return (
     <div className="max-w-7xl mx-auto p-6">
