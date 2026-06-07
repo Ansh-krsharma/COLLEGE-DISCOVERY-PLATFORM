@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useCompareStore } from "../../store/compareStore";
 import { useSavedStore } from "../../store/savedStore";
-
+import ThemeToggle from "./ThemeToggle";
 export default function Navbar() {
   return (
     <nav className="bg-white shadow">
@@ -33,6 +33,7 @@ export default function Navbar() {
           <Link to="/login">
             Login
           </Link>
+          <ThemeToggle />
         </div>
       </div>
     </nav>
