@@ -5,7 +5,7 @@ import ProtectedRoute from "../components/auth/ProtectedRoute";
 
 import Home from "../pages/Home";
 import Colleges from "../pages/Colleges";
-import CollegeDetail from "../pages/CollegeDetail";
+import CollegeDetail from "../pages/CollegesDetail";
 import Compare from "../pages/Compare";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
