@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { College } from "../../types/college";
+import type { College } from "../../types/college";
 import CompareButton from "../compare/CompareButton";
 import SaveButton from "../saved/SaveButton";
 

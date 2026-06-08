@@ -5,10 +5,10 @@ import ProtectedRoute from "../components/auth/ProtectedRoute";
 
 import Home from "../pages/Home";
 import Colleges from "../pages/Colleges";
-import CollegeDetail from "../pages/CollegesDetail";
-import Compare from "../pages/compare.tsx";
+import CollegesDetail from "../pages/CollegesDetail";
+import Compare from "../pages/Compare";
 import Login from "../pages/Login";
-import Signup from "../pages/Signup.tsx";
+import Signup from "../pages/Signup";
 import Saved from "../pages/Saved";
 
 export const router =
@@ -35,7 +35,7 @@ export const router =
 
     {
       path: "/college/:id",
-      element: <CollegeDetail />,
+      element: <CollegesDetail />,
     },
 
     {

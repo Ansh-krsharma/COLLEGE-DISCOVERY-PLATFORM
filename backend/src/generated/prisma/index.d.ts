@@ -3,7 +3,7 @@
  * Client
 **/
 
-import * as runtime from './runtime/client.js';
+import * as runtime from './runtime/library.js';
 import $Types = runtime.Types // general types
 import $Public = runtime.Types.Public
 import $Utils = runtime.Types.Utils
@@ -13,6 +13,11 @@ import $Result = runtime.Types.Result
 export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
+/**
+ * Model College
+ * 
+ */
+export type College = $Result.DefaultSelection<Prisma.$CollegePayload>
 /**
  * Model Course
  * 
@@ -28,11 +33,6 @@ export type Student = $Result.DefaultSelection<Prisma.$StudentPayload>
  * 
  */
 export type Review = $Result.DefaultSelection<Prisma.$ReviewPayload>
-/**
- * Model College
- * 
- */
-export type College = $Result.DefaultSelection<Prisma.$CollegePayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -40,15 +40,13 @@ export type College = $Result.DefaultSelection<Prisma.$CollegePayload>
  * Type-safe database client for TypeScript & Node.js
  * @example
  * ```
- * const prisma = new PrismaClient({
- *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
- * })
- * // Fetch zero or more Courses
- * const courses = await prisma.course.findMany()
+ * const prisma = new PrismaClient()
+ * // Fetch zero or more Colleges
+ * const colleges = await prisma.college.findMany()
  * ```
  *
  *
- * Read more in our [docs](https://pris.ly/d/client).
+ * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
  */
 export class PrismaClient<
   ClientOptions extends Prisma.PrismaClientOptions = Prisma.PrismaClientOptions,
@@ -63,15 +61,13 @@ export class PrismaClient<
    * Type-safe database client for TypeScript & Node.js
    * @example
    * ```
-   * const prisma = new PrismaClient({
-   *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
-   * })
-   * // Fetch zero or more Courses
-   * const courses = await prisma.course.findMany()
+   * const prisma = new PrismaClient()
+   * // Fetch zero or more Colleges
+   * const colleges = await prisma.college.findMany()
    * ```
    *
    *
-   * Read more in our [docs](https://pris.ly/d/client).
+   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
    */
 
   constructor(optionsArg ?: Prisma.Subset<ClientOptions, Prisma.PrismaClientOptions>);
@@ -94,7 +90,7 @@ export class PrismaClient<
    * const result = await prisma.$executeRaw`UPDATE User SET cool = ${true} WHERE email = ${'user@email.com'};`
    * ```
    *
-   * Read more in our [docs](https://pris.ly/d/raw-queries).
+   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $executeRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<number>;
 
@@ -106,7 +102,7 @@ export class PrismaClient<
    * const result = await prisma.$executeRawUnsafe('UPDATE User SET cool = $1 WHERE email = $2 ;', true, 'user@email.com')
    * ```
    *
-   * Read more in our [docs](https://pris.ly/d/raw-queries).
+   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $executeRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<number>;
 
@@ -117,7 +113,7 @@ export class PrismaClient<
    * const result = await prisma.$queryRaw`SELECT * FROM User WHERE id = ${1} OR email = ${'user@email.com'};`
    * ```
    *
-   * Read more in our [docs](https://pris.ly/d/raw-queries).
+   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $queryRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<T>;
 
@@ -129,7 +125,7 @@ export class PrismaClient<
    * const result = await prisma.$queryRawUnsafe('SELECT * FROM User WHERE id = $1 OR email = $2;', 1, 'user@email.com')
    * ```
    *
-   * Read more in our [docs](https://pris.ly/d/raw-queries).
+   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $queryRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<T>;
 
@@ -145,17 +141,28 @@ export class PrismaClient<
    * ])
    * ```
    * 
-   * Read more in our [docs](https://www.prisma.io/docs/orm/prisma-client/queries/transactions).
+   * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
    */
-  $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
+  $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
 
   $transaction<R>(fn: (prisma: Omit<PrismaClient, runtime.ITXClientDenyList>) => $Utils.JsPromise<R>, options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<R>
+
 
   $extends: $Extensions.ExtendsHook<"extends", Prisma.TypeMapCb<ClientOptions>, ExtArgs, $Utils.Call<Prisma.TypeMapCb<ClientOptions>, {
     extArgs: ExtArgs
   }>>
 
       /**
+   * `prisma.college`: Exposes CRUD operations for the **College** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Colleges
+    * const colleges = await prisma.college.findMany()
+    * ```
+    */
+  get college(): Prisma.CollegeDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.course`: Exposes CRUD operations for the **Course** model.
     * Example usage:
     * ```ts
@@ -184,16 +191,6 @@ export class PrismaClient<
     * ```
     */
   get review(): Prisma.ReviewDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.college`: Exposes CRUD operations for the **College** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Colleges
-    * const colleges = await prisma.college.findMany()
-    * ```
-    */
-  get college(): Prisma.CollegeDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -234,6 +231,14 @@ export namespace Prisma {
   export type DecimalJsLike = runtime.DecimalJsLike
 
   /**
+   * Metrics
+   */
+  export type Metrics = runtime.Metrics
+  export type Metric<T> = runtime.Metric<T>
+  export type MetricHistogram = runtime.MetricHistogram
+  export type MetricHistogramBucket = runtime.MetricHistogramBucket
+
+  /**
   * Extensions
   */
   export import Extension = $Extensions.UserArgs
@@ -244,12 +249,11 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 7.8.0
-   * Query Engine version: 3c6e192761c0362d496ed980de936e2f3cebcd3a
+   * Prisma Client JS version: 6.15.0
+   * Query Engine version: 85179d7826409ee107a6ba334b5e305ae3fba9fb
    */
   export type PrismaVersion = {
     client: string
-    engine: string
   }
 
   export const prismaVersion: PrismaVersion
@@ -259,7 +263,6 @@ export namespace Prisma {
    */
 
 
-  export import Bytes = runtime.Bytes
   export import JsonObject = runtime.JsonObject
   export import JsonArray = runtime.JsonArray
   export import JsonValue = runtime.JsonValue
@@ -628,15 +631,18 @@ export namespace Prisma {
 
 
   export const ModelName: {
+    College: 'College',
     Course: 'Course',
     Student: 'Student',
-    Review: 'Review',
-    College: 'College'
+    Review: 'Review'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
 
 
+  export type Datasources = {
+    db?: Datasource
+  }
 
   interface TypeMapCb<ClientOptions = {}> extends $Utils.Fn<{extArgs: $Extensions.InternalArgs }, $Utils.Record<string, any>> {
     returns: Prisma.TypeMap<this['params']['extArgs'], ClientOptions extends { omit: infer OmitOptions } ? OmitOptions : {}>
@@ -647,10 +653,84 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "course" | "student" | "review" | "college"
+      modelProps: "college" | "course" | "student" | "review"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
+      College: {
+        payload: Prisma.$CollegePayload<ExtArgs>
+        fields: Prisma.CollegeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CollegeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollegePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CollegeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollegePayload>
+          }
+          findFirst: {
+            args: Prisma.CollegeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollegePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CollegeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollegePayload>
+          }
+          findMany: {
+            args: Prisma.CollegeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollegePayload>[]
+          }
+          create: {
+            args: Prisma.CollegeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollegePayload>
+          }
+          createMany: {
+            args: Prisma.CollegeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CollegeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollegePayload>[]
+          }
+          delete: {
+            args: Prisma.CollegeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollegePayload>
+          }
+          update: {
+            args: Prisma.CollegeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollegePayload>
+          }
+          deleteMany: {
+            args: Prisma.CollegeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CollegeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CollegeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollegePayload>[]
+          }
+          upsert: {
+            args: Prisma.CollegeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CollegePayload>
+          }
+          aggregate: {
+            args: Prisma.CollegeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCollege>
+          }
+          groupBy: {
+            args: Prisma.CollegeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CollegeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CollegeCountArgs<ExtArgs>
+            result: $Utils.Optional<CollegeCountAggregateOutputType> | number
+          }
+        }
+      }
       Course: {
         payload: Prisma.$CoursePayload<ExtArgs>
         fields: Prisma.CourseFieldRefs
@@ -873,80 +953,6 @@ export namespace Prisma {
           }
         }
       }
-      College: {
-        payload: Prisma.$CollegePayload<ExtArgs>
-        fields: Prisma.CollegeFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.CollegeFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollegePayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.CollegeFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollegePayload>
-          }
-          findFirst: {
-            args: Prisma.CollegeFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollegePayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.CollegeFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollegePayload>
-          }
-          findMany: {
-            args: Prisma.CollegeFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollegePayload>[]
-          }
-          create: {
-            args: Prisma.CollegeCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollegePayload>
-          }
-          createMany: {
-            args: Prisma.CollegeCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.CollegeCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollegePayload>[]
-          }
-          delete: {
-            args: Prisma.CollegeDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollegePayload>
-          }
-          update: {
-            args: Prisma.CollegeUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollegePayload>
-          }
-          deleteMany: {
-            args: Prisma.CollegeDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.CollegeUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.CollegeUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollegePayload>[]
-          }
-          upsert: {
-            args: Prisma.CollegeUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CollegePayload>
-          }
-          aggregate: {
-            args: Prisma.CollegeAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateCollege>
-          }
-          groupBy: {
-            args: Prisma.CollegeGroupByArgs<ExtArgs>
-            result: $Utils.Optional<CollegeGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.CollegeCountArgs<ExtArgs>
-            result: $Utils.Optional<CollegeCountAggregateOutputType> | number
-          }
-        }
-      }
     }
   } & {
     other: {
@@ -976,6 +982,14 @@ export namespace Prisma {
   export type ErrorFormat = 'pretty' | 'colorless' | 'minimal'
   export interface PrismaClientOptions {
     /**
+     * Overwrites the datasource url from your schema.prisma file
+     */
+    datasources?: Datasources
+    /**
+     * Overwrites the datasource url from your schema.prisma file
+     */
+    datasourceUrl?: string
+    /**
      * @default "colorless"
      */
     errorFormat?: ErrorFormat
@@ -1001,7 +1015,7 @@ export namespace Prisma {
      *  { emit: 'stdout', level: 'error' }
      * 
      * ```
-     * Read more in our [docs](https://pris.ly/d/logging).
+     * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/logging#the-log-option).
      */
     log?: (LogLevel | LogDefinition)[]
     /**
@@ -1014,14 +1028,6 @@ export namespace Prisma {
       timeout?: number
       isolationLevel?: Prisma.TransactionIsolationLevel
     }
-    /**
-     * Instance of a Driver Adapter, e.g., like one provided by `@prisma/adapter-planetscale`
-     */
-    adapter?: runtime.SqlDriverAdapterFactory
-    /**
-     * Prisma Accelerate URL allowing the client to connect through Accelerate instead of a direct database.
-     */
-    accelerateUrl?: string
     /**
      * Global configuration for omitting model fields by default.
      * 
@@ -1037,28 +1043,12 @@ export namespace Prisma {
      * ```
      */
     omit?: Prisma.GlobalOmitConfig
-    /**
-     * SQL commenter plugins that add metadata to SQL queries as comments.
-     * Comments follow the sqlcommenter format: https://google.github.io/sqlcommenter/
-     * 
-     * @example
-     * ```
-     * const prisma = new PrismaClient({
-     *   adapter,
-     *   comments: [
-     *     traceContext(),
-     *     queryInsights(),
-     *   ],
-     * })
-     * ```
-     */
-    comments?: runtime.SqlCommenterPlugin[]
   }
   export type GlobalOmitConfig = {
+    college?: CollegeOmit
     course?: CourseOmit
     student?: StudentOmit
     review?: ReviewOmit
-    college?: CollegeOmit
   }
 
   /* Types for Logging */
@@ -1186,6 +1176,1217 @@ export namespace Prisma {
   /**
    * Models
    */
+
+  /**
+   * Model College
+   */
+
+  export type AggregateCollege = {
+    _count: CollegeCountAggregateOutputType | null
+    _avg: CollegeAvgAggregateOutputType | null
+    _sum: CollegeSumAggregateOutputType | null
+    _min: CollegeMinAggregateOutputType | null
+    _max: CollegeMaxAggregateOutputType | null
+  }
+
+  export type CollegeAvgAggregateOutputType = {
+    fees: number | null
+    rating: number | null
+    averagePackage: number | null
+    highestPackage: number | null
+  }
+
+  export type CollegeSumAggregateOutputType = {
+    fees: number | null
+    rating: number | null
+    averagePackage: number | null
+    highestPackage: number | null
+  }
+
+  export type CollegeMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    location: string | null
+    fees: number | null
+    rating: number | null
+    overview: string | null
+    averagePackage: number | null
+    highestPackage: number | null
+  }
+
+  export type CollegeMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    location: string | null
+    fees: number | null
+    rating: number | null
+    overview: string | null
+    averagePackage: number | null
+    highestPackage: number | null
+  }
+
+  export type CollegeCountAggregateOutputType = {
+    id: number
+    name: number
+    location: number
+    fees: number
+    rating: number
+    overview: number
+    averagePackage: number
+    highestPackage: number
+    _all: number
+  }
+
+
+  export type CollegeAvgAggregateInputType = {
+    fees?: true
+    rating?: true
+    averagePackage?: true
+    highestPackage?: true
+  }
+
+  export type CollegeSumAggregateInputType = {
+    fees?: true
+    rating?: true
+    averagePackage?: true
+    highestPackage?: true
+  }
+
+  export type CollegeMinAggregateInputType = {
+    id?: true
+    name?: true
+    location?: true
+    fees?: true
+    rating?: true
+    overview?: true
+    averagePackage?: true
+    highestPackage?: true
+  }
+
+  export type CollegeMaxAggregateInputType = {
+    id?: true
+    name?: true
+    location?: true
+    fees?: true
+    rating?: true
+    overview?: true
+    averagePackage?: true
+    highestPackage?: true
+  }
+
+  export type CollegeCountAggregateInputType = {
+    id?: true
+    name?: true
+    location?: true
+    fees?: true
+    rating?: true
+    overview?: true
+    averagePackage?: true
+    highestPackage?: true
+    _all?: true
+  }
+
+  export type CollegeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which College to aggregate.
+     */
+    where?: CollegeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Colleges to fetch.
+     */
+    orderBy?: CollegeOrderByWithRelationInput | CollegeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CollegeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Colleges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Colleges.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Colleges
+    **/
+    _count?: true | CollegeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CollegeAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CollegeSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CollegeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CollegeMaxAggregateInputType
+  }
+
+  export type GetCollegeAggregateType<T extends CollegeAggregateArgs> = {
+        [P in keyof T & keyof AggregateCollege]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCollege[P]>
+      : GetScalarType<T[P], AggregateCollege[P]>
+  }
+
+
+
+
+  export type CollegeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CollegeWhereInput
+    orderBy?: CollegeOrderByWithAggregationInput | CollegeOrderByWithAggregationInput[]
+    by: CollegeScalarFieldEnum[] | CollegeScalarFieldEnum
+    having?: CollegeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CollegeCountAggregateInputType | true
+    _avg?: CollegeAvgAggregateInputType
+    _sum?: CollegeSumAggregateInputType
+    _min?: CollegeMinAggregateInputType
+    _max?: CollegeMaxAggregateInputType
+  }
+
+  export type CollegeGroupByOutputType = {
+    id: string
+    name: string
+    location: string | null
+    fees: number
+    rating: number
+    overview: string | null
+    averagePackage: number
+    highestPackage: number
+    _count: CollegeCountAggregateOutputType | null
+    _avg: CollegeAvgAggregateOutputType | null
+    _sum: CollegeSumAggregateOutputType | null
+    _min: CollegeMinAggregateOutputType | null
+    _max: CollegeMaxAggregateOutputType | null
+  }
+
+  type GetCollegeGroupByPayload<T extends CollegeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CollegeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CollegeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CollegeGroupByOutputType[P]>
+            : GetScalarType<T[P], CollegeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CollegeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    location?: boolean
+    fees?: boolean
+    rating?: boolean
+    overview?: boolean
+    averagePackage?: boolean
+    highestPackage?: boolean
+    courses?: boolean | College$coursesArgs<ExtArgs>
+    students?: boolean | College$studentsArgs<ExtArgs>
+    reviews?: boolean | College$reviewsArgs<ExtArgs>
+    _count?: boolean | CollegeCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["college"]>
+
+  export type CollegeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    location?: boolean
+    fees?: boolean
+    rating?: boolean
+    overview?: boolean
+    averagePackage?: boolean
+    highestPackage?: boolean
+  }, ExtArgs["result"]["college"]>
+
+  export type CollegeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    location?: boolean
+    fees?: boolean
+    rating?: boolean
+    overview?: boolean
+    averagePackage?: boolean
+    highestPackage?: boolean
+  }, ExtArgs["result"]["college"]>
+
+  export type CollegeSelectScalar = {
+    id?: boolean
+    name?: boolean
+    location?: boolean
+    fees?: boolean
+    rating?: boolean
+    overview?: boolean
+    averagePackage?: boolean
+    highestPackage?: boolean
+  }
+
+  export type CollegeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "location" | "fees" | "rating" | "overview" | "averagePackage" | "highestPackage", ExtArgs["result"]["college"]>
+  export type CollegeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    courses?: boolean | College$coursesArgs<ExtArgs>
+    students?: boolean | College$studentsArgs<ExtArgs>
+    reviews?: boolean | College$reviewsArgs<ExtArgs>
+    _count?: boolean | CollegeCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type CollegeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type CollegeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $CollegePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "College"
+    objects: {
+      courses: Prisma.$CoursePayload<ExtArgs>[]
+      students: Prisma.$StudentPayload<ExtArgs>[]
+      reviews: Prisma.$ReviewPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      location: string | null
+      fees: number
+      rating: number
+      overview: string | null
+      averagePackage: number
+      highestPackage: number
+    }, ExtArgs["result"]["college"]>
+    composites: {}
+  }
+
+  type CollegeGetPayload<S extends boolean | null | undefined | CollegeDefaultArgs> = $Result.GetResult<Prisma.$CollegePayload, S>
+
+  type CollegeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CollegeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CollegeCountAggregateInputType | true
+    }
+
+  export interface CollegeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['College'], meta: { name: 'College' } }
+    /**
+     * Find zero or one College that matches the filter.
+     * @param {CollegeFindUniqueArgs} args - Arguments to find a College
+     * @example
+     * // Get one College
+     * const college = await prisma.college.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CollegeFindUniqueArgs>(args: SelectSubset<T, CollegeFindUniqueArgs<ExtArgs>>): Prisma__CollegeClient<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one College that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CollegeFindUniqueOrThrowArgs} args - Arguments to find a College
+     * @example
+     * // Get one College
+     * const college = await prisma.college.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CollegeFindUniqueOrThrowArgs>(args: SelectSubset<T, CollegeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CollegeClient<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first College that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CollegeFindFirstArgs} args - Arguments to find a College
+     * @example
+     * // Get one College
+     * const college = await prisma.college.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CollegeFindFirstArgs>(args?: SelectSubset<T, CollegeFindFirstArgs<ExtArgs>>): Prisma__CollegeClient<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first College that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CollegeFindFirstOrThrowArgs} args - Arguments to find a College
+     * @example
+     * // Get one College
+     * const college = await prisma.college.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CollegeFindFirstOrThrowArgs>(args?: SelectSubset<T, CollegeFindFirstOrThrowArgs<ExtArgs>>): Prisma__CollegeClient<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Colleges that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CollegeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Colleges
+     * const colleges = await prisma.college.findMany()
+     * 
+     * // Get first 10 Colleges
+     * const colleges = await prisma.college.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const collegeWithIdOnly = await prisma.college.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CollegeFindManyArgs>(args?: SelectSubset<T, CollegeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a College.
+     * @param {CollegeCreateArgs} args - Arguments to create a College.
+     * @example
+     * // Create one College
+     * const College = await prisma.college.create({
+     *   data: {
+     *     // ... data to create a College
+     *   }
+     * })
+     * 
+     */
+    create<T extends CollegeCreateArgs>(args: SelectSubset<T, CollegeCreateArgs<ExtArgs>>): Prisma__CollegeClient<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Colleges.
+     * @param {CollegeCreateManyArgs} args - Arguments to create many Colleges.
+     * @example
+     * // Create many Colleges
+     * const college = await prisma.college.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CollegeCreateManyArgs>(args?: SelectSubset<T, CollegeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Colleges and returns the data saved in the database.
+     * @param {CollegeCreateManyAndReturnArgs} args - Arguments to create many Colleges.
+     * @example
+     * // Create many Colleges
+     * const college = await prisma.college.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Colleges and only return the `id`
+     * const collegeWithIdOnly = await prisma.college.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CollegeCreateManyAndReturnArgs>(args?: SelectSubset<T, CollegeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a College.
+     * @param {CollegeDeleteArgs} args - Arguments to delete one College.
+     * @example
+     * // Delete one College
+     * const College = await prisma.college.delete({
+     *   where: {
+     *     // ... filter to delete one College
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CollegeDeleteArgs>(args: SelectSubset<T, CollegeDeleteArgs<ExtArgs>>): Prisma__CollegeClient<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one College.
+     * @param {CollegeUpdateArgs} args - Arguments to update one College.
+     * @example
+     * // Update one College
+     * const college = await prisma.college.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CollegeUpdateArgs>(args: SelectSubset<T, CollegeUpdateArgs<ExtArgs>>): Prisma__CollegeClient<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Colleges.
+     * @param {CollegeDeleteManyArgs} args - Arguments to filter Colleges to delete.
+     * @example
+     * // Delete a few Colleges
+     * const { count } = await prisma.college.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CollegeDeleteManyArgs>(args?: SelectSubset<T, CollegeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Colleges.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CollegeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Colleges
+     * const college = await prisma.college.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CollegeUpdateManyArgs>(args: SelectSubset<T, CollegeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Colleges and returns the data updated in the database.
+     * @param {CollegeUpdateManyAndReturnArgs} args - Arguments to update many Colleges.
+     * @example
+     * // Update many Colleges
+     * const college = await prisma.college.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Colleges and only return the `id`
+     * const collegeWithIdOnly = await prisma.college.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CollegeUpdateManyAndReturnArgs>(args: SelectSubset<T, CollegeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one College.
+     * @param {CollegeUpsertArgs} args - Arguments to update or create a College.
+     * @example
+     * // Update or create a College
+     * const college = await prisma.college.upsert({
+     *   create: {
+     *     // ... data to create a College
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the College we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CollegeUpsertArgs>(args: SelectSubset<T, CollegeUpsertArgs<ExtArgs>>): Prisma__CollegeClient<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Colleges.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CollegeCountArgs} args - Arguments to filter Colleges to count.
+     * @example
+     * // Count the number of Colleges
+     * const count = await prisma.college.count({
+     *   where: {
+     *     // ... the filter for the Colleges we want to count
+     *   }
+     * })
+    **/
+    count<T extends CollegeCountArgs>(
+      args?: Subset<T, CollegeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CollegeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a College.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CollegeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CollegeAggregateArgs>(args: Subset<T, CollegeAggregateArgs>): Prisma.PrismaPromise<GetCollegeAggregateType<T>>
+
+    /**
+     * Group by College.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CollegeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CollegeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CollegeGroupByArgs['orderBy'] }
+        : { orderBy?: CollegeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CollegeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCollegeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the College model
+   */
+  readonly fields: CollegeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for College.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CollegeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    courses<T extends College$coursesArgs<ExtArgs> = {}>(args?: Subset<T, College$coursesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    students<T extends College$studentsArgs<ExtArgs> = {}>(args?: Subset<T, College$studentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reviews<T extends College$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, College$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the College model
+   */
+  interface CollegeFieldRefs {
+    readonly id: FieldRef<"College", 'String'>
+    readonly name: FieldRef<"College", 'String'>
+    readonly location: FieldRef<"College", 'String'>
+    readonly fees: FieldRef<"College", 'Int'>
+    readonly rating: FieldRef<"College", 'Float'>
+    readonly overview: FieldRef<"College", 'String'>
+    readonly averagePackage: FieldRef<"College", 'Int'>
+    readonly highestPackage: FieldRef<"College", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * College findUnique
+   */
+  export type CollegeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the College
+     */
+    select?: CollegeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the College
+     */
+    omit?: CollegeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CollegeInclude<ExtArgs> | null
+    /**
+     * Filter, which College to fetch.
+     */
+    where: CollegeWhereUniqueInput
+  }
+
+  /**
+   * College findUniqueOrThrow
+   */
+  export type CollegeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the College
+     */
+    select?: CollegeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the College
+     */
+    omit?: CollegeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CollegeInclude<ExtArgs> | null
+    /**
+     * Filter, which College to fetch.
+     */
+    where: CollegeWhereUniqueInput
+  }
+
+  /**
+   * College findFirst
+   */
+  export type CollegeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the College
+     */
+    select?: CollegeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the College
+     */
+    omit?: CollegeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CollegeInclude<ExtArgs> | null
+    /**
+     * Filter, which College to fetch.
+     */
+    where?: CollegeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Colleges to fetch.
+     */
+    orderBy?: CollegeOrderByWithRelationInput | CollegeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Colleges.
+     */
+    cursor?: CollegeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Colleges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Colleges.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Colleges.
+     */
+    distinct?: CollegeScalarFieldEnum | CollegeScalarFieldEnum[]
+  }
+
+  /**
+   * College findFirstOrThrow
+   */
+  export type CollegeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the College
+     */
+    select?: CollegeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the College
+     */
+    omit?: CollegeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CollegeInclude<ExtArgs> | null
+    /**
+     * Filter, which College to fetch.
+     */
+    where?: CollegeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Colleges to fetch.
+     */
+    orderBy?: CollegeOrderByWithRelationInput | CollegeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Colleges.
+     */
+    cursor?: CollegeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Colleges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Colleges.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Colleges.
+     */
+    distinct?: CollegeScalarFieldEnum | CollegeScalarFieldEnum[]
+  }
+
+  /**
+   * College findMany
+   */
+  export type CollegeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the College
+     */
+    select?: CollegeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the College
+     */
+    omit?: CollegeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CollegeInclude<ExtArgs> | null
+    /**
+     * Filter, which Colleges to fetch.
+     */
+    where?: CollegeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Colleges to fetch.
+     */
+    orderBy?: CollegeOrderByWithRelationInput | CollegeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Colleges.
+     */
+    cursor?: CollegeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Colleges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Colleges.
+     */
+    skip?: number
+    distinct?: CollegeScalarFieldEnum | CollegeScalarFieldEnum[]
+  }
+
+  /**
+   * College create
+   */
+  export type CollegeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the College
+     */
+    select?: CollegeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the College
+     */
+    omit?: CollegeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CollegeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a College.
+     */
+    data: XOR<CollegeCreateInput, CollegeUncheckedCreateInput>
+  }
+
+  /**
+   * College createMany
+   */
+  export type CollegeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Colleges.
+     */
+    data: CollegeCreateManyInput | CollegeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * College createManyAndReturn
+   */
+  export type CollegeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the College
+     */
+    select?: CollegeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the College
+     */
+    omit?: CollegeOmit<ExtArgs> | null
+    /**
+     * The data used to create many Colleges.
+     */
+    data: CollegeCreateManyInput | CollegeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * College update
+   */
+  export type CollegeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the College
+     */
+    select?: CollegeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the College
+     */
+    omit?: CollegeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CollegeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a College.
+     */
+    data: XOR<CollegeUpdateInput, CollegeUncheckedUpdateInput>
+    /**
+     * Choose, which College to update.
+     */
+    where: CollegeWhereUniqueInput
+  }
+
+  /**
+   * College updateMany
+   */
+  export type CollegeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Colleges.
+     */
+    data: XOR<CollegeUpdateManyMutationInput, CollegeUncheckedUpdateManyInput>
+    /**
+     * Filter which Colleges to update
+     */
+    where?: CollegeWhereInput
+    /**
+     * Limit how many Colleges to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * College updateManyAndReturn
+   */
+  export type CollegeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the College
+     */
+    select?: CollegeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the College
+     */
+    omit?: CollegeOmit<ExtArgs> | null
+    /**
+     * The data used to update Colleges.
+     */
+    data: XOR<CollegeUpdateManyMutationInput, CollegeUncheckedUpdateManyInput>
+    /**
+     * Filter which Colleges to update
+     */
+    where?: CollegeWhereInput
+    /**
+     * Limit how many Colleges to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * College upsert
+   */
+  export type CollegeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the College
+     */
+    select?: CollegeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the College
+     */
+    omit?: CollegeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CollegeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the College to update in case it exists.
+     */
+    where: CollegeWhereUniqueInput
+    /**
+     * In case the College found by the `where` argument doesn't exist, create a new College with this data.
+     */
+    create: XOR<CollegeCreateInput, CollegeUncheckedCreateInput>
+    /**
+     * In case the College was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CollegeUpdateInput, CollegeUncheckedUpdateInput>
+  }
+
+  /**
+   * College delete
+   */
+  export type CollegeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the College
+     */
+    select?: CollegeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the College
+     */
+    omit?: CollegeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CollegeInclude<ExtArgs> | null
+    /**
+     * Filter which College to delete.
+     */
+    where: CollegeWhereUniqueInput
+  }
+
+  /**
+   * College deleteMany
+   */
+  export type CollegeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Colleges to delete
+     */
+    where?: CollegeWhereInput
+    /**
+     * Limit how many Colleges to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * College.courses
+   */
+  export type College$coursesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Course
+     */
+    select?: CourseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Course
+     */
+    omit?: CourseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CourseInclude<ExtArgs> | null
+    where?: CourseWhereInput
+    orderBy?: CourseOrderByWithRelationInput | CourseOrderByWithRelationInput[]
+    cursor?: CourseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CourseScalarFieldEnum | CourseScalarFieldEnum[]
+  }
+
+  /**
+   * College.students
+   */
+  export type College$studentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Student
+     */
+    select?: StudentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Student
+     */
+    omit?: StudentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentInclude<ExtArgs> | null
+    where?: StudentWhereInput
+    orderBy?: StudentOrderByWithRelationInput | StudentOrderByWithRelationInput[]
+    cursor?: StudentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StudentScalarFieldEnum | StudentScalarFieldEnum[]
+  }
+
+  /**
+   * College.reviews
+   */
+  export type College$reviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: ReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: ReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReviewInclude<ExtArgs> | null
+    where?: ReviewWhereInput
+    orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
+    cursor?: ReviewWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
+  }
+
+  /**
+   * College without action
+   */
+  export type CollegeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the College
+     */
+    select?: CollegeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the College
+     */
+    omit?: CollegeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CollegeInclude<ExtArgs> | null
+  }
+
 
   /**
    * Model Course
@@ -2014,11 +3215,6 @@ export namespace Prisma {
      * Skip the first `n` Courses.
      */
     skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Courses.
-     */
     distinct?: CourseScalarFieldEnum | CourseScalarFieldEnum[]
   }
 
@@ -3051,11 +4247,6 @@ export namespace Prisma {
      * Skip the first `n` Students.
      */
     skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Students.
-     */
     distinct?: StudentScalarFieldEnum | StudentScalarFieldEnum[]
   }
 
@@ -4148,11 +5339,6 @@ export namespace Prisma {
      * Skip the first `n` Reviews.
      */
     skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Reviews.
-     */
     distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
   }
 
@@ -4372,1111 +5558,6 @@ export namespace Prisma {
 
 
   /**
-   * Model College
-   */
-
-  export type AggregateCollege = {
-    _count: CollegeCountAggregateOutputType | null
-    _min: CollegeMinAggregateOutputType | null
-    _max: CollegeMaxAggregateOutputType | null
-  }
-
-  export type CollegeMinAggregateOutputType = {
-    id: string | null
-    name: string | null
-    location: string | null
-  }
-
-  export type CollegeMaxAggregateOutputType = {
-    id: string | null
-    name: string | null
-    location: string | null
-  }
-
-  export type CollegeCountAggregateOutputType = {
-    id: number
-    name: number
-    location: number
-    _all: number
-  }
-
-
-  export type CollegeMinAggregateInputType = {
-    id?: true
-    name?: true
-    location?: true
-  }
-
-  export type CollegeMaxAggregateInputType = {
-    id?: true
-    name?: true
-    location?: true
-  }
-
-  export type CollegeCountAggregateInputType = {
-    id?: true
-    name?: true
-    location?: true
-    _all?: true
-  }
-
-  export type CollegeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which College to aggregate.
-     */
-    where?: CollegeWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Colleges to fetch.
-     */
-    orderBy?: CollegeOrderByWithRelationInput | CollegeOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: CollegeWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Colleges from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Colleges.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Colleges
-    **/
-    _count?: true | CollegeCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: CollegeMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: CollegeMaxAggregateInputType
-  }
-
-  export type GetCollegeAggregateType<T extends CollegeAggregateArgs> = {
-        [P in keyof T & keyof AggregateCollege]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateCollege[P]>
-      : GetScalarType<T[P], AggregateCollege[P]>
-  }
-
-
-
-
-  export type CollegeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CollegeWhereInput
-    orderBy?: CollegeOrderByWithAggregationInput | CollegeOrderByWithAggregationInput[]
-    by: CollegeScalarFieldEnum[] | CollegeScalarFieldEnum
-    having?: CollegeScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: CollegeCountAggregateInputType | true
-    _min?: CollegeMinAggregateInputType
-    _max?: CollegeMaxAggregateInputType
-  }
-
-  export type CollegeGroupByOutputType = {
-    id: string
-    name: string
-    location: string | null
-    _count: CollegeCountAggregateOutputType | null
-    _min: CollegeMinAggregateOutputType | null
-    _max: CollegeMaxAggregateOutputType | null
-  }
-
-  type GetCollegeGroupByPayload<T extends CollegeGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<CollegeGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof CollegeGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], CollegeGroupByOutputType[P]>
-            : GetScalarType<T[P], CollegeGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type CollegeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    location?: boolean
-    courses?: boolean | College$coursesArgs<ExtArgs>
-    students?: boolean | College$studentsArgs<ExtArgs>
-    reviews?: boolean | College$reviewsArgs<ExtArgs>
-    _count?: boolean | CollegeCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["college"]>
-
-  export type CollegeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    location?: boolean
-  }, ExtArgs["result"]["college"]>
-
-  export type CollegeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    location?: boolean
-  }, ExtArgs["result"]["college"]>
-
-  export type CollegeSelectScalar = {
-    id?: boolean
-    name?: boolean
-    location?: boolean
-  }
-
-  export type CollegeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "location", ExtArgs["result"]["college"]>
-  export type CollegeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    courses?: boolean | College$coursesArgs<ExtArgs>
-    students?: boolean | College$studentsArgs<ExtArgs>
-    reviews?: boolean | College$reviewsArgs<ExtArgs>
-    _count?: boolean | CollegeCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type CollegeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type CollegeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-
-  export type $CollegePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "College"
-    objects: {
-      courses: Prisma.$CoursePayload<ExtArgs>[]
-      students: Prisma.$StudentPayload<ExtArgs>[]
-      reviews: Prisma.$ReviewPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      name: string
-      location: string | null
-    }, ExtArgs["result"]["college"]>
-    composites: {}
-  }
-
-  type CollegeGetPayload<S extends boolean | null | undefined | CollegeDefaultArgs> = $Result.GetResult<Prisma.$CollegePayload, S>
-
-  type CollegeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<CollegeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: CollegeCountAggregateInputType | true
-    }
-
-  export interface CollegeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['College'], meta: { name: 'College' } }
-    /**
-     * Find zero or one College that matches the filter.
-     * @param {CollegeFindUniqueArgs} args - Arguments to find a College
-     * @example
-     * // Get one College
-     * const college = await prisma.college.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends CollegeFindUniqueArgs>(args: SelectSubset<T, CollegeFindUniqueArgs<ExtArgs>>): Prisma__CollegeClient<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one College that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {CollegeFindUniqueOrThrowArgs} args - Arguments to find a College
-     * @example
-     * // Get one College
-     * const college = await prisma.college.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends CollegeFindUniqueOrThrowArgs>(args: SelectSubset<T, CollegeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CollegeClient<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first College that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CollegeFindFirstArgs} args - Arguments to find a College
-     * @example
-     * // Get one College
-     * const college = await prisma.college.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends CollegeFindFirstArgs>(args?: SelectSubset<T, CollegeFindFirstArgs<ExtArgs>>): Prisma__CollegeClient<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first College that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CollegeFindFirstOrThrowArgs} args - Arguments to find a College
-     * @example
-     * // Get one College
-     * const college = await prisma.college.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends CollegeFindFirstOrThrowArgs>(args?: SelectSubset<T, CollegeFindFirstOrThrowArgs<ExtArgs>>): Prisma__CollegeClient<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Colleges that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CollegeFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Colleges
-     * const colleges = await prisma.college.findMany()
-     * 
-     * // Get first 10 Colleges
-     * const colleges = await prisma.college.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const collegeWithIdOnly = await prisma.college.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends CollegeFindManyArgs>(args?: SelectSubset<T, CollegeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a College.
-     * @param {CollegeCreateArgs} args - Arguments to create a College.
-     * @example
-     * // Create one College
-     * const College = await prisma.college.create({
-     *   data: {
-     *     // ... data to create a College
-     *   }
-     * })
-     * 
-     */
-    create<T extends CollegeCreateArgs>(args: SelectSubset<T, CollegeCreateArgs<ExtArgs>>): Prisma__CollegeClient<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Colleges.
-     * @param {CollegeCreateManyArgs} args - Arguments to create many Colleges.
-     * @example
-     * // Create many Colleges
-     * const college = await prisma.college.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends CollegeCreateManyArgs>(args?: SelectSubset<T, CollegeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Colleges and returns the data saved in the database.
-     * @param {CollegeCreateManyAndReturnArgs} args - Arguments to create many Colleges.
-     * @example
-     * // Create many Colleges
-     * const college = await prisma.college.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Colleges and only return the `id`
-     * const collegeWithIdOnly = await prisma.college.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends CollegeCreateManyAndReturnArgs>(args?: SelectSubset<T, CollegeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a College.
-     * @param {CollegeDeleteArgs} args - Arguments to delete one College.
-     * @example
-     * // Delete one College
-     * const College = await prisma.college.delete({
-     *   where: {
-     *     // ... filter to delete one College
-     *   }
-     * })
-     * 
-     */
-    delete<T extends CollegeDeleteArgs>(args: SelectSubset<T, CollegeDeleteArgs<ExtArgs>>): Prisma__CollegeClient<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one College.
-     * @param {CollegeUpdateArgs} args - Arguments to update one College.
-     * @example
-     * // Update one College
-     * const college = await prisma.college.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends CollegeUpdateArgs>(args: SelectSubset<T, CollegeUpdateArgs<ExtArgs>>): Prisma__CollegeClient<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Colleges.
-     * @param {CollegeDeleteManyArgs} args - Arguments to filter Colleges to delete.
-     * @example
-     * // Delete a few Colleges
-     * const { count } = await prisma.college.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends CollegeDeleteManyArgs>(args?: SelectSubset<T, CollegeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Colleges.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CollegeUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Colleges
-     * const college = await prisma.college.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends CollegeUpdateManyArgs>(args: SelectSubset<T, CollegeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Colleges and returns the data updated in the database.
-     * @param {CollegeUpdateManyAndReturnArgs} args - Arguments to update many Colleges.
-     * @example
-     * // Update many Colleges
-     * const college = await prisma.college.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Colleges and only return the `id`
-     * const collegeWithIdOnly = await prisma.college.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends CollegeUpdateManyAndReturnArgs>(args: SelectSubset<T, CollegeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one College.
-     * @param {CollegeUpsertArgs} args - Arguments to update or create a College.
-     * @example
-     * // Update or create a College
-     * const college = await prisma.college.upsert({
-     *   create: {
-     *     // ... data to create a College
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the College we want to update
-     *   }
-     * })
-     */
-    upsert<T extends CollegeUpsertArgs>(args: SelectSubset<T, CollegeUpsertArgs<ExtArgs>>): Prisma__CollegeClient<$Result.GetResult<Prisma.$CollegePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Colleges.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CollegeCountArgs} args - Arguments to filter Colleges to count.
-     * @example
-     * // Count the number of Colleges
-     * const count = await prisma.college.count({
-     *   where: {
-     *     // ... the filter for the Colleges we want to count
-     *   }
-     * })
-    **/
-    count<T extends CollegeCountArgs>(
-      args?: Subset<T, CollegeCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], CollegeCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a College.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CollegeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends CollegeAggregateArgs>(args: Subset<T, CollegeAggregateArgs>): Prisma.PrismaPromise<GetCollegeAggregateType<T>>
-
-    /**
-     * Group by College.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CollegeGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends CollegeGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: CollegeGroupByArgs['orderBy'] }
-        : { orderBy?: CollegeGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, CollegeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCollegeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the College model
-   */
-  readonly fields: CollegeFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for College.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__CollegeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    courses<T extends College$coursesArgs<ExtArgs> = {}>(args?: Subset<T, College$coursesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    students<T extends College$studentsArgs<ExtArgs> = {}>(args?: Subset<T, College$studentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    reviews<T extends College$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, College$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the College model
-   */
-  interface CollegeFieldRefs {
-    readonly id: FieldRef<"College", 'String'>
-    readonly name: FieldRef<"College", 'String'>
-    readonly location: FieldRef<"College", 'String'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * College findUnique
-   */
-  export type CollegeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the College
-     */
-    select?: CollegeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the College
-     */
-    omit?: CollegeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CollegeInclude<ExtArgs> | null
-    /**
-     * Filter, which College to fetch.
-     */
-    where: CollegeWhereUniqueInput
-  }
-
-  /**
-   * College findUniqueOrThrow
-   */
-  export type CollegeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the College
-     */
-    select?: CollegeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the College
-     */
-    omit?: CollegeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CollegeInclude<ExtArgs> | null
-    /**
-     * Filter, which College to fetch.
-     */
-    where: CollegeWhereUniqueInput
-  }
-
-  /**
-   * College findFirst
-   */
-  export type CollegeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the College
-     */
-    select?: CollegeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the College
-     */
-    omit?: CollegeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CollegeInclude<ExtArgs> | null
-    /**
-     * Filter, which College to fetch.
-     */
-    where?: CollegeWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Colleges to fetch.
-     */
-    orderBy?: CollegeOrderByWithRelationInput | CollegeOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Colleges.
-     */
-    cursor?: CollegeWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Colleges from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Colleges.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Colleges.
-     */
-    distinct?: CollegeScalarFieldEnum | CollegeScalarFieldEnum[]
-  }
-
-  /**
-   * College findFirstOrThrow
-   */
-  export type CollegeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the College
-     */
-    select?: CollegeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the College
-     */
-    omit?: CollegeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CollegeInclude<ExtArgs> | null
-    /**
-     * Filter, which College to fetch.
-     */
-    where?: CollegeWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Colleges to fetch.
-     */
-    orderBy?: CollegeOrderByWithRelationInput | CollegeOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Colleges.
-     */
-    cursor?: CollegeWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Colleges from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Colleges.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Colleges.
-     */
-    distinct?: CollegeScalarFieldEnum | CollegeScalarFieldEnum[]
-  }
-
-  /**
-   * College findMany
-   */
-  export type CollegeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the College
-     */
-    select?: CollegeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the College
-     */
-    omit?: CollegeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CollegeInclude<ExtArgs> | null
-    /**
-     * Filter, which Colleges to fetch.
-     */
-    where?: CollegeWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Colleges to fetch.
-     */
-    orderBy?: CollegeOrderByWithRelationInput | CollegeOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Colleges.
-     */
-    cursor?: CollegeWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Colleges from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Colleges.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Colleges.
-     */
-    distinct?: CollegeScalarFieldEnum | CollegeScalarFieldEnum[]
-  }
-
-  /**
-   * College create
-   */
-  export type CollegeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the College
-     */
-    select?: CollegeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the College
-     */
-    omit?: CollegeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CollegeInclude<ExtArgs> | null
-    /**
-     * The data needed to create a College.
-     */
-    data: XOR<CollegeCreateInput, CollegeUncheckedCreateInput>
-  }
-
-  /**
-   * College createMany
-   */
-  export type CollegeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Colleges.
-     */
-    data: CollegeCreateManyInput | CollegeCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * College createManyAndReturn
-   */
-  export type CollegeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the College
-     */
-    select?: CollegeSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the College
-     */
-    omit?: CollegeOmit<ExtArgs> | null
-    /**
-     * The data used to create many Colleges.
-     */
-    data: CollegeCreateManyInput | CollegeCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * College update
-   */
-  export type CollegeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the College
-     */
-    select?: CollegeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the College
-     */
-    omit?: CollegeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CollegeInclude<ExtArgs> | null
-    /**
-     * The data needed to update a College.
-     */
-    data: XOR<CollegeUpdateInput, CollegeUncheckedUpdateInput>
-    /**
-     * Choose, which College to update.
-     */
-    where: CollegeWhereUniqueInput
-  }
-
-  /**
-   * College updateMany
-   */
-  export type CollegeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Colleges.
-     */
-    data: XOR<CollegeUpdateManyMutationInput, CollegeUncheckedUpdateManyInput>
-    /**
-     * Filter which Colleges to update
-     */
-    where?: CollegeWhereInput
-    /**
-     * Limit how many Colleges to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * College updateManyAndReturn
-   */
-  export type CollegeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the College
-     */
-    select?: CollegeSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the College
-     */
-    omit?: CollegeOmit<ExtArgs> | null
-    /**
-     * The data used to update Colleges.
-     */
-    data: XOR<CollegeUpdateManyMutationInput, CollegeUncheckedUpdateManyInput>
-    /**
-     * Filter which Colleges to update
-     */
-    where?: CollegeWhereInput
-    /**
-     * Limit how many Colleges to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * College upsert
-   */
-  export type CollegeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the College
-     */
-    select?: CollegeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the College
-     */
-    omit?: CollegeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CollegeInclude<ExtArgs> | null
-    /**
-     * The filter to search for the College to update in case it exists.
-     */
-    where: CollegeWhereUniqueInput
-    /**
-     * In case the College found by the `where` argument doesn't exist, create a new College with this data.
-     */
-    create: XOR<CollegeCreateInput, CollegeUncheckedCreateInput>
-    /**
-     * In case the College was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<CollegeUpdateInput, CollegeUncheckedUpdateInput>
-  }
-
-  /**
-   * College delete
-   */
-  export type CollegeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the College
-     */
-    select?: CollegeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the College
-     */
-    omit?: CollegeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CollegeInclude<ExtArgs> | null
-    /**
-     * Filter which College to delete.
-     */
-    where: CollegeWhereUniqueInput
-  }
-
-  /**
-   * College deleteMany
-   */
-  export type CollegeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Colleges to delete
-     */
-    where?: CollegeWhereInput
-    /**
-     * Limit how many Colleges to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * College.courses
-   */
-  export type College$coursesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Course
-     */
-    select?: CourseSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Course
-     */
-    omit?: CourseOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CourseInclude<ExtArgs> | null
-    where?: CourseWhereInput
-    orderBy?: CourseOrderByWithRelationInput | CourseOrderByWithRelationInput[]
-    cursor?: CourseWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CourseScalarFieldEnum | CourseScalarFieldEnum[]
-  }
-
-  /**
-   * College.students
-   */
-  export type College$studentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Student
-     */
-    select?: StudentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Student
-     */
-    omit?: StudentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: StudentInclude<ExtArgs> | null
-    where?: StudentWhereInput
-    orderBy?: StudentOrderByWithRelationInput | StudentOrderByWithRelationInput[]
-    cursor?: StudentWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: StudentScalarFieldEnum | StudentScalarFieldEnum[]
-  }
-
-  /**
-   * College.reviews
-   */
-  export type College$reviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Review
-     */
-    select?: ReviewSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Review
-     */
-    omit?: ReviewOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ReviewInclude<ExtArgs> | null
-    where?: ReviewWhereInput
-    orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
-    cursor?: ReviewWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
-  }
-
-  /**
-   * College without action
-   */
-  export type CollegeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the College
-     */
-    select?: CollegeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the College
-     */
-    omit?: CollegeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CollegeInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Enums
    */
 
@@ -5488,6 +5569,20 @@ export namespace Prisma {
   };
 
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+  export const CollegeScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    location: 'location',
+    fees: 'fees',
+    rating: 'rating',
+    overview: 'overview',
+    averagePackage: 'averagePackage',
+    highestPackage: 'highestPackage'
+  };
+
+  export type CollegeScalarFieldEnum = (typeof CollegeScalarFieldEnum)[keyof typeof CollegeScalarFieldEnum]
 
 
   export const CourseScalarFieldEnum: {
@@ -5518,15 +5613,6 @@ export namespace Prisma {
   };
 
   export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
-
-
-  export const CollegeScalarFieldEnum: {
-    id: 'id',
-    name: 'name',
-    location: 'location'
-  };
-
-  export type CollegeScalarFieldEnum = (typeof CollegeScalarFieldEnum)[keyof typeof CollegeScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -5573,20 +5659,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Float'
-   */
-  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-  /**
-   * Reference to a field of type 'Float[]'
-   */
-  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -5598,10 +5670,102 @@ export namespace Prisma {
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
+
+
+  /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
   /**
    * Deep Input Types
    */
 
+
+  export type CollegeWhereInput = {
+    AND?: CollegeWhereInput | CollegeWhereInput[]
+    OR?: CollegeWhereInput[]
+    NOT?: CollegeWhereInput | CollegeWhereInput[]
+    id?: StringFilter<"College"> | string
+    name?: StringFilter<"College"> | string
+    location?: StringNullableFilter<"College"> | string | null
+    fees?: IntFilter<"College"> | number
+    rating?: FloatFilter<"College"> | number
+    overview?: StringNullableFilter<"College"> | string | null
+    averagePackage?: IntFilter<"College"> | number
+    highestPackage?: IntFilter<"College"> | number
+    courses?: CourseListRelationFilter
+    students?: StudentListRelationFilter
+    reviews?: ReviewListRelationFilter
+  }
+
+  export type CollegeOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    location?: SortOrderInput | SortOrder
+    fees?: SortOrder
+    rating?: SortOrder
+    overview?: SortOrderInput | SortOrder
+    averagePackage?: SortOrder
+    highestPackage?: SortOrder
+    courses?: CourseOrderByRelationAggregateInput
+    students?: StudentOrderByRelationAggregateInput
+    reviews?: ReviewOrderByRelationAggregateInput
+  }
+
+  export type CollegeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CollegeWhereInput | CollegeWhereInput[]
+    OR?: CollegeWhereInput[]
+    NOT?: CollegeWhereInput | CollegeWhereInput[]
+    name?: StringFilter<"College"> | string
+    location?: StringNullableFilter<"College"> | string | null
+    fees?: IntFilter<"College"> | number
+    rating?: FloatFilter<"College"> | number
+    overview?: StringNullableFilter<"College"> | string | null
+    averagePackage?: IntFilter<"College"> | number
+    highestPackage?: IntFilter<"College"> | number
+    courses?: CourseListRelationFilter
+    students?: StudentListRelationFilter
+    reviews?: ReviewListRelationFilter
+  }, "id">
+
+  export type CollegeOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    location?: SortOrderInput | SortOrder
+    fees?: SortOrder
+    rating?: SortOrder
+    overview?: SortOrderInput | SortOrder
+    averagePackage?: SortOrder
+    highestPackage?: SortOrder
+    _count?: CollegeCountOrderByAggregateInput
+    _avg?: CollegeAvgOrderByAggregateInput
+    _max?: CollegeMaxOrderByAggregateInput
+    _min?: CollegeMinOrderByAggregateInput
+    _sum?: CollegeSumOrderByAggregateInput
+  }
+
+  export type CollegeScalarWhereWithAggregatesInput = {
+    AND?: CollegeScalarWhereWithAggregatesInput | CollegeScalarWhereWithAggregatesInput[]
+    OR?: CollegeScalarWhereWithAggregatesInput[]
+    NOT?: CollegeScalarWhereWithAggregatesInput | CollegeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"College"> | string
+    name?: StringWithAggregatesFilter<"College"> | string
+    location?: StringNullableWithAggregatesFilter<"College"> | string | null
+    fees?: IntWithAggregatesFilter<"College"> | number
+    rating?: FloatWithAggregatesFilter<"College"> | number
+    overview?: StringNullableWithAggregatesFilter<"College"> | string | null
+    averagePackage?: IntWithAggregatesFilter<"College"> | number
+    highestPackage?: IntWithAggregatesFilter<"College"> | number
+  }
 
   export type CourseWhereInput = {
     AND?: CourseWhereInput | CourseWhereInput[]
@@ -5755,55 +5919,93 @@ export namespace Prisma {
     collegeId?: StringWithAggregatesFilter<"Review"> | string
   }
 
-  export type CollegeWhereInput = {
-    AND?: CollegeWhereInput | CollegeWhereInput[]
-    OR?: CollegeWhereInput[]
-    NOT?: CollegeWhereInput | CollegeWhereInput[]
-    id?: StringFilter<"College"> | string
-    name?: StringFilter<"College"> | string
-    location?: StringNullableFilter<"College"> | string | null
-    courses?: CourseListRelationFilter
-    students?: StudentListRelationFilter
-    reviews?: ReviewListRelationFilter
-  }
-
-  export type CollegeOrderByWithRelationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    location?: SortOrderInput | SortOrder
-    courses?: CourseOrderByRelationAggregateInput
-    students?: StudentOrderByRelationAggregateInput
-    reviews?: ReviewOrderByRelationAggregateInput
-  }
-
-  export type CollegeWhereUniqueInput = Prisma.AtLeast<{
+  export type CollegeCreateInput = {
     id?: string
-    AND?: CollegeWhereInput | CollegeWhereInput[]
-    OR?: CollegeWhereInput[]
-    NOT?: CollegeWhereInput | CollegeWhereInput[]
-    name?: StringFilter<"College"> | string
-    location?: StringNullableFilter<"College"> | string | null
-    courses?: CourseListRelationFilter
-    students?: StudentListRelationFilter
-    reviews?: ReviewListRelationFilter
-  }, "id">
-
-  export type CollegeOrderByWithAggregationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    location?: SortOrderInput | SortOrder
-    _count?: CollegeCountOrderByAggregateInput
-    _max?: CollegeMaxOrderByAggregateInput
-    _min?: CollegeMinOrderByAggregateInput
+    name: string
+    location?: string | null
+    fees?: number
+    rating?: number
+    overview?: string | null
+    averagePackage?: number
+    highestPackage?: number
+    courses?: CourseCreateNestedManyWithoutCollegeInput
+    students?: StudentCreateNestedManyWithoutCollegeInput
+    reviews?: ReviewCreateNestedManyWithoutCollegeInput
   }
 
-  export type CollegeScalarWhereWithAggregatesInput = {
-    AND?: CollegeScalarWhereWithAggregatesInput | CollegeScalarWhereWithAggregatesInput[]
-    OR?: CollegeScalarWhereWithAggregatesInput[]
-    NOT?: CollegeScalarWhereWithAggregatesInput | CollegeScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"College"> | string
-    name?: StringWithAggregatesFilter<"College"> | string
-    location?: StringNullableWithAggregatesFilter<"College"> | string | null
+  export type CollegeUncheckedCreateInput = {
+    id?: string
+    name: string
+    location?: string | null
+    fees?: number
+    rating?: number
+    overview?: string | null
+    averagePackage?: number
+    highestPackage?: number
+    courses?: CourseUncheckedCreateNestedManyWithoutCollegeInput
+    students?: StudentUncheckedCreateNestedManyWithoutCollegeInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutCollegeInput
+  }
+
+  export type CollegeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    fees?: IntFieldUpdateOperationsInput | number
+    rating?: FloatFieldUpdateOperationsInput | number
+    overview?: NullableStringFieldUpdateOperationsInput | string | null
+    averagePackage?: IntFieldUpdateOperationsInput | number
+    highestPackage?: IntFieldUpdateOperationsInput | number
+    courses?: CourseUpdateManyWithoutCollegeNestedInput
+    students?: StudentUpdateManyWithoutCollegeNestedInput
+    reviews?: ReviewUpdateManyWithoutCollegeNestedInput
+  }
+
+  export type CollegeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    fees?: IntFieldUpdateOperationsInput | number
+    rating?: FloatFieldUpdateOperationsInput | number
+    overview?: NullableStringFieldUpdateOperationsInput | string | null
+    averagePackage?: IntFieldUpdateOperationsInput | number
+    highestPackage?: IntFieldUpdateOperationsInput | number
+    courses?: CourseUncheckedUpdateManyWithoutCollegeNestedInput
+    students?: StudentUncheckedUpdateManyWithoutCollegeNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutCollegeNestedInput
+  }
+
+  export type CollegeCreateManyInput = {
+    id?: string
+    name: string
+    location?: string | null
+    fees?: number
+    rating?: number
+    overview?: string | null
+    averagePackage?: number
+    highestPackage?: number
+  }
+
+  export type CollegeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    fees?: IntFieldUpdateOperationsInput | number
+    rating?: FloatFieldUpdateOperationsInput | number
+    overview?: NullableStringFieldUpdateOperationsInput | string | null
+    averagePackage?: IntFieldUpdateOperationsInput | number
+    highestPackage?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type CollegeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    fees?: IntFieldUpdateOperationsInput | number
+    rating?: FloatFieldUpdateOperationsInput | number
+    overview?: NullableStringFieldUpdateOperationsInput | string | null
+    averagePackage?: IntFieldUpdateOperationsInput | number
+    highestPackage?: IntFieldUpdateOperationsInput | number
   }
 
   export type CourseCreateInput = {
@@ -5950,60 +6152,6 @@ export namespace Prisma {
     collegeId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type CollegeCreateInput = {
-    id?: string
-    name: string
-    location?: string | null
-    courses?: CourseCreateNestedManyWithoutCollegeInput
-    students?: StudentCreateNestedManyWithoutCollegeInput
-    reviews?: ReviewCreateNestedManyWithoutCollegeInput
-  }
-
-  export type CollegeUncheckedCreateInput = {
-    id?: string
-    name: string
-    location?: string | null
-    courses?: CourseUncheckedCreateNestedManyWithoutCollegeInput
-    students?: StudentUncheckedCreateNestedManyWithoutCollegeInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutCollegeInput
-  }
-
-  export type CollegeUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
-    courses?: CourseUpdateManyWithoutCollegeNestedInput
-    students?: StudentUpdateManyWithoutCollegeNestedInput
-    reviews?: ReviewUpdateManyWithoutCollegeNestedInput
-  }
-
-  export type CollegeUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
-    courses?: CourseUncheckedUpdateManyWithoutCollegeNestedInput
-    students?: StudentUncheckedUpdateManyWithoutCollegeNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutCollegeNestedInput
-  }
-
-  export type CollegeCreateManyInput = {
-    id?: string
-    name: string
-    location?: string | null
-  }
-
-  export type CollegeUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type CollegeUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -6019,127 +6167,6 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type CollegeScalarRelationFilter = {
-    is?: CollegeWhereInput
-    isNot?: CollegeWhereInput
-  }
-
-  export type CourseCountOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    duration?: SortOrder
-    collegeId?: SortOrder
-  }
-
-  export type CourseMaxOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    duration?: SortOrder
-    collegeId?: SortOrder
-  }
-
-  export type CourseMinOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    duration?: SortOrder
-    collegeId?: SortOrder
-  }
-
-  export type StringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
-  }
-
-  export type StudentCountOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    collegeId?: SortOrder
-  }
-
-  export type StudentMaxOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    collegeId?: SortOrder
-  }
-
-  export type StudentMinOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    collegeId?: SortOrder
-  }
-
-  export type FloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type ReviewCountOrderByAggregateInput = {
-    id?: SortOrder
-    title?: SortOrder
-    comment?: SortOrder
-    rating?: SortOrder
-    collegeId?: SortOrder
-  }
-
-  export type ReviewAvgOrderByAggregateInput = {
-    rating?: SortOrder
-  }
-
-  export type ReviewMaxOrderByAggregateInput = {
-    id?: SortOrder
-    title?: SortOrder
-    comment?: SortOrder
-    rating?: SortOrder
-    collegeId?: SortOrder
-  }
-
-  export type ReviewMinOrderByAggregateInput = {
-    id?: SortOrder
-    title?: SortOrder
-    comment?: SortOrder
-    rating?: SortOrder
-    collegeId?: SortOrder
-  }
-
-  export type ReviewSumOrderByAggregateInput = {
-    rating?: SortOrder
-  }
-
-  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
-  }
-
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -6153,6 +6180,28 @@ export namespace Prisma {
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     mode?: QueryMode
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type CourseListRelationFilter = {
@@ -6194,18 +6243,65 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     location?: SortOrder
+    fees?: SortOrder
+    rating?: SortOrder
+    overview?: SortOrder
+    averagePackage?: SortOrder
+    highestPackage?: SortOrder
+  }
+
+  export type CollegeAvgOrderByAggregateInput = {
+    fees?: SortOrder
+    rating?: SortOrder
+    averagePackage?: SortOrder
+    highestPackage?: SortOrder
   }
 
   export type CollegeMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     location?: SortOrder
+    fees?: SortOrder
+    rating?: SortOrder
+    overview?: SortOrder
+    averagePackage?: SortOrder
+    highestPackage?: SortOrder
   }
 
   export type CollegeMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     location?: SortOrder
+    fees?: SortOrder
+    rating?: SortOrder
+    overview?: SortOrder
+    averagePackage?: SortOrder
+    highestPackage?: SortOrder
+  }
+
+  export type CollegeSumOrderByAggregateInput = {
+    fees?: SortOrder
+    rating?: SortOrder
+    averagePackage?: SortOrder
+    highestPackage?: SortOrder
+  }
+
+  export type StringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -6226,58 +6322,112 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type CollegeCreateNestedOneWithoutCoursesInput = {
-    create?: XOR<CollegeCreateWithoutCoursesInput, CollegeUncheckedCreateWithoutCoursesInput>
-    connectOrCreate?: CollegeCreateOrConnectWithoutCoursesInput
-    connect?: CollegeWhereUniqueInput
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
-  export type CollegeUpdateOneRequiredWithoutCoursesNestedInput = {
-    create?: XOR<CollegeCreateWithoutCoursesInput, CollegeUncheckedCreateWithoutCoursesInput>
-    connectOrCreate?: CollegeCreateOrConnectWithoutCoursesInput
-    upsert?: CollegeUpsertWithoutCoursesInput
-    connect?: CollegeWhereUniqueInput
-    update?: XOR<XOR<CollegeUpdateToOneWithWhereWithoutCoursesInput, CollegeUpdateWithoutCoursesInput>, CollegeUncheckedUpdateWithoutCoursesInput>
+  export type CollegeScalarRelationFilter = {
+    is?: CollegeWhereInput
+    isNot?: CollegeWhereInput
   }
 
-  export type CollegeCreateNestedOneWithoutStudentsInput = {
-    create?: XOR<CollegeCreateWithoutStudentsInput, CollegeUncheckedCreateWithoutStudentsInput>
-    connectOrCreate?: CollegeCreateOrConnectWithoutStudentsInput
-    connect?: CollegeWhereUniqueInput
+  export type CourseCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    duration?: SortOrder
+    collegeId?: SortOrder
   }
 
-  export type CollegeUpdateOneRequiredWithoutStudentsNestedInput = {
-    create?: XOR<CollegeCreateWithoutStudentsInput, CollegeUncheckedCreateWithoutStudentsInput>
-    connectOrCreate?: CollegeCreateOrConnectWithoutStudentsInput
-    upsert?: CollegeUpsertWithoutStudentsInput
-    connect?: CollegeWhereUniqueInput
-    update?: XOR<XOR<CollegeUpdateToOneWithWhereWithoutStudentsInput, CollegeUpdateWithoutStudentsInput>, CollegeUncheckedUpdateWithoutStudentsInput>
+  export type CourseMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    duration?: SortOrder
+    collegeId?: SortOrder
   }
 
-  export type CollegeCreateNestedOneWithoutReviewsInput = {
-    create?: XOR<CollegeCreateWithoutReviewsInput, CollegeUncheckedCreateWithoutReviewsInput>
-    connectOrCreate?: CollegeCreateOrConnectWithoutReviewsInput
-    connect?: CollegeWhereUniqueInput
+  export type CourseMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    duration?: SortOrder
+    collegeId?: SortOrder
   }
 
-  export type FloatFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
+  export type StudentCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    collegeId?: SortOrder
   }
 
-  export type CollegeUpdateOneRequiredWithoutReviewsNestedInput = {
-    create?: XOR<CollegeCreateWithoutReviewsInput, CollegeUncheckedCreateWithoutReviewsInput>
-    connectOrCreate?: CollegeCreateOrConnectWithoutReviewsInput
-    upsert?: CollegeUpsertWithoutReviewsInput
-    connect?: CollegeWhereUniqueInput
-    update?: XOR<XOR<CollegeUpdateToOneWithWhereWithoutReviewsInput, CollegeUpdateWithoutReviewsInput>, CollegeUncheckedUpdateWithoutReviewsInput>
+  export type StudentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    collegeId?: SortOrder
+  }
+
+  export type StudentMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    collegeId?: SortOrder
+  }
+
+  export type ReviewCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    comment?: SortOrder
+    rating?: SortOrder
+    collegeId?: SortOrder
+  }
+
+  export type ReviewAvgOrderByAggregateInput = {
+    rating?: SortOrder
+  }
+
+  export type ReviewMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    comment?: SortOrder
+    rating?: SortOrder
+    collegeId?: SortOrder
+  }
+
+  export type ReviewMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    comment?: SortOrder
+    rating?: SortOrder
+    collegeId?: SortOrder
+  }
+
+  export type ReviewSumOrderByAggregateInput = {
+    rating?: SortOrder
   }
 
   export type CourseCreateNestedManyWithoutCollegeInput = {
@@ -6322,8 +6472,28 @@ export namespace Prisma {
     connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
   }
 
+  export type StringFieldUpdateOperationsInput = {
+    set?: string
+  }
+
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type CourseUpdateManyWithoutCollegeNestedInput = {
@@ -6410,6 +6580,48 @@ export namespace Prisma {
     deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
   }
 
+  export type CollegeCreateNestedOneWithoutCoursesInput = {
+    create?: XOR<CollegeCreateWithoutCoursesInput, CollegeUncheckedCreateWithoutCoursesInput>
+    connectOrCreate?: CollegeCreateOrConnectWithoutCoursesInput
+    connect?: CollegeWhereUniqueInput
+  }
+
+  export type CollegeUpdateOneRequiredWithoutCoursesNestedInput = {
+    create?: XOR<CollegeCreateWithoutCoursesInput, CollegeUncheckedCreateWithoutCoursesInput>
+    connectOrCreate?: CollegeCreateOrConnectWithoutCoursesInput
+    upsert?: CollegeUpsertWithoutCoursesInput
+    connect?: CollegeWhereUniqueInput
+    update?: XOR<XOR<CollegeUpdateToOneWithWhereWithoutCoursesInput, CollegeUpdateWithoutCoursesInput>, CollegeUncheckedUpdateWithoutCoursesInput>
+  }
+
+  export type CollegeCreateNestedOneWithoutStudentsInput = {
+    create?: XOR<CollegeCreateWithoutStudentsInput, CollegeUncheckedCreateWithoutStudentsInput>
+    connectOrCreate?: CollegeCreateOrConnectWithoutStudentsInput
+    connect?: CollegeWhereUniqueInput
+  }
+
+  export type CollegeUpdateOneRequiredWithoutStudentsNestedInput = {
+    create?: XOR<CollegeCreateWithoutStudentsInput, CollegeUncheckedCreateWithoutStudentsInput>
+    connectOrCreate?: CollegeCreateOrConnectWithoutStudentsInput
+    upsert?: CollegeUpsertWithoutStudentsInput
+    connect?: CollegeWhereUniqueInput
+    update?: XOR<XOR<CollegeUpdateToOneWithWhereWithoutStudentsInput, CollegeUpdateWithoutStudentsInput>, CollegeUncheckedUpdateWithoutStudentsInput>
+  }
+
+  export type CollegeCreateNestedOneWithoutReviewsInput = {
+    create?: XOR<CollegeCreateWithoutReviewsInput, CollegeUncheckedCreateWithoutReviewsInput>
+    connectOrCreate?: CollegeCreateOrConnectWithoutReviewsInput
+    connect?: CollegeWhereUniqueInput
+  }
+
+  export type CollegeUpdateOneRequiredWithoutReviewsNestedInput = {
+    create?: XOR<CollegeCreateWithoutReviewsInput, CollegeUncheckedCreateWithoutReviewsInput>
+    connectOrCreate?: CollegeCreateOrConnectWithoutReviewsInput
+    upsert?: CollegeUpsertWithoutReviewsInput
+    connect?: CollegeWhereUniqueInput
+    update?: XOR<XOR<CollegeUpdateToOneWithWhereWithoutReviewsInput, CollegeUpdateWithoutReviewsInput>, CollegeUncheckedUpdateWithoutReviewsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -6424,10 +6636,10 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -6435,10 +6647,7 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -6463,26 +6672,10 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
-  }
-
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+  export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -6490,7 +6683,10 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -6521,148 +6717,36 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type CollegeCreateWithoutCoursesInput = {
-    id?: string
-    name: string
-    location?: string | null
-    students?: StudentCreateNestedManyWithoutCollegeInput
-    reviews?: ReviewCreateNestedManyWithoutCollegeInput
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
-  export type CollegeUncheckedCreateWithoutCoursesInput = {
-    id?: string
-    name: string
-    location?: string | null
-    students?: StudentUncheckedCreateNestedManyWithoutCollegeInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutCollegeInput
-  }
-
-  export type CollegeCreateOrConnectWithoutCoursesInput = {
-    where: CollegeWhereUniqueInput
-    create: XOR<CollegeCreateWithoutCoursesInput, CollegeUncheckedCreateWithoutCoursesInput>
-  }
-
-  export type CollegeUpsertWithoutCoursesInput = {
-    update: XOR<CollegeUpdateWithoutCoursesInput, CollegeUncheckedUpdateWithoutCoursesInput>
-    create: XOR<CollegeCreateWithoutCoursesInput, CollegeUncheckedCreateWithoutCoursesInput>
-    where?: CollegeWhereInput
-  }
-
-  export type CollegeUpdateToOneWithWhereWithoutCoursesInput = {
-    where?: CollegeWhereInput
-    data: XOR<CollegeUpdateWithoutCoursesInput, CollegeUncheckedUpdateWithoutCoursesInput>
-  }
-
-  export type CollegeUpdateWithoutCoursesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
-    students?: StudentUpdateManyWithoutCollegeNestedInput
-    reviews?: ReviewUpdateManyWithoutCollegeNestedInput
-  }
-
-  export type CollegeUncheckedUpdateWithoutCoursesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
-    students?: StudentUncheckedUpdateManyWithoutCollegeNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutCollegeNestedInput
-  }
-
-  export type CollegeCreateWithoutStudentsInput = {
-    id?: string
-    name: string
-    location?: string | null
-    courses?: CourseCreateNestedManyWithoutCollegeInput
-    reviews?: ReviewCreateNestedManyWithoutCollegeInput
-  }
-
-  export type CollegeUncheckedCreateWithoutStudentsInput = {
-    id?: string
-    name: string
-    location?: string | null
-    courses?: CourseUncheckedCreateNestedManyWithoutCollegeInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutCollegeInput
-  }
-
-  export type CollegeCreateOrConnectWithoutStudentsInput = {
-    where: CollegeWhereUniqueInput
-    create: XOR<CollegeCreateWithoutStudentsInput, CollegeUncheckedCreateWithoutStudentsInput>
-  }
-
-  export type CollegeUpsertWithoutStudentsInput = {
-    update: XOR<CollegeUpdateWithoutStudentsInput, CollegeUncheckedUpdateWithoutStudentsInput>
-    create: XOR<CollegeCreateWithoutStudentsInput, CollegeUncheckedCreateWithoutStudentsInput>
-    where?: CollegeWhereInput
-  }
-
-  export type CollegeUpdateToOneWithWhereWithoutStudentsInput = {
-    where?: CollegeWhereInput
-    data: XOR<CollegeUpdateWithoutStudentsInput, CollegeUncheckedUpdateWithoutStudentsInput>
-  }
-
-  export type CollegeUpdateWithoutStudentsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
-    courses?: CourseUpdateManyWithoutCollegeNestedInput
-    reviews?: ReviewUpdateManyWithoutCollegeNestedInput
-  }
-
-  export type CollegeUncheckedUpdateWithoutStudentsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
-    courses?: CourseUncheckedUpdateManyWithoutCollegeNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutCollegeNestedInput
-  }
-
-  export type CollegeCreateWithoutReviewsInput = {
-    id?: string
-    name: string
-    location?: string | null
-    courses?: CourseCreateNestedManyWithoutCollegeInput
-    students?: StudentCreateNestedManyWithoutCollegeInput
-  }
-
-  export type CollegeUncheckedCreateWithoutReviewsInput = {
-    id?: string
-    name: string
-    location?: string | null
-    courses?: CourseUncheckedCreateNestedManyWithoutCollegeInput
-    students?: StudentUncheckedCreateNestedManyWithoutCollegeInput
-  }
-
-  export type CollegeCreateOrConnectWithoutReviewsInput = {
-    where: CollegeWhereUniqueInput
-    create: XOR<CollegeCreateWithoutReviewsInput, CollegeUncheckedCreateWithoutReviewsInput>
-  }
-
-  export type CollegeUpsertWithoutReviewsInput = {
-    update: XOR<CollegeUpdateWithoutReviewsInput, CollegeUncheckedUpdateWithoutReviewsInput>
-    create: XOR<CollegeCreateWithoutReviewsInput, CollegeUncheckedCreateWithoutReviewsInput>
-    where?: CollegeWhereInput
-  }
-
-  export type CollegeUpdateToOneWithWhereWithoutReviewsInput = {
-    where?: CollegeWhereInput
-    data: XOR<CollegeUpdateWithoutReviewsInput, CollegeUncheckedUpdateWithoutReviewsInput>
-  }
-
-  export type CollegeUpdateWithoutReviewsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
-    courses?: CourseUpdateManyWithoutCollegeNestedInput
-    students?: StudentUpdateManyWithoutCollegeNestedInput
-  }
-
-  export type CollegeUncheckedUpdateWithoutReviewsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    location?: NullableStringFieldUpdateOperationsInput | string | null
-    courses?: CourseUncheckedUpdateManyWithoutCollegeNestedInput
-    students?: StudentUncheckedUpdateManyWithoutCollegeNestedInput
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type CourseCreateWithoutCollegeInput = {
@@ -6807,6 +6891,210 @@ export namespace Prisma {
     comment?: StringFilter<"Review"> | string
     rating?: FloatFilter<"Review"> | number
     collegeId?: StringFilter<"Review"> | string
+  }
+
+  export type CollegeCreateWithoutCoursesInput = {
+    id?: string
+    name: string
+    location?: string | null
+    fees?: number
+    rating?: number
+    overview?: string | null
+    averagePackage?: number
+    highestPackage?: number
+    students?: StudentCreateNestedManyWithoutCollegeInput
+    reviews?: ReviewCreateNestedManyWithoutCollegeInput
+  }
+
+  export type CollegeUncheckedCreateWithoutCoursesInput = {
+    id?: string
+    name: string
+    location?: string | null
+    fees?: number
+    rating?: number
+    overview?: string | null
+    averagePackage?: number
+    highestPackage?: number
+    students?: StudentUncheckedCreateNestedManyWithoutCollegeInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutCollegeInput
+  }
+
+  export type CollegeCreateOrConnectWithoutCoursesInput = {
+    where: CollegeWhereUniqueInput
+    create: XOR<CollegeCreateWithoutCoursesInput, CollegeUncheckedCreateWithoutCoursesInput>
+  }
+
+  export type CollegeUpsertWithoutCoursesInput = {
+    update: XOR<CollegeUpdateWithoutCoursesInput, CollegeUncheckedUpdateWithoutCoursesInput>
+    create: XOR<CollegeCreateWithoutCoursesInput, CollegeUncheckedCreateWithoutCoursesInput>
+    where?: CollegeWhereInput
+  }
+
+  export type CollegeUpdateToOneWithWhereWithoutCoursesInput = {
+    where?: CollegeWhereInput
+    data: XOR<CollegeUpdateWithoutCoursesInput, CollegeUncheckedUpdateWithoutCoursesInput>
+  }
+
+  export type CollegeUpdateWithoutCoursesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    fees?: IntFieldUpdateOperationsInput | number
+    rating?: FloatFieldUpdateOperationsInput | number
+    overview?: NullableStringFieldUpdateOperationsInput | string | null
+    averagePackage?: IntFieldUpdateOperationsInput | number
+    highestPackage?: IntFieldUpdateOperationsInput | number
+    students?: StudentUpdateManyWithoutCollegeNestedInput
+    reviews?: ReviewUpdateManyWithoutCollegeNestedInput
+  }
+
+  export type CollegeUncheckedUpdateWithoutCoursesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    fees?: IntFieldUpdateOperationsInput | number
+    rating?: FloatFieldUpdateOperationsInput | number
+    overview?: NullableStringFieldUpdateOperationsInput | string | null
+    averagePackage?: IntFieldUpdateOperationsInput | number
+    highestPackage?: IntFieldUpdateOperationsInput | number
+    students?: StudentUncheckedUpdateManyWithoutCollegeNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutCollegeNestedInput
+  }
+
+  export type CollegeCreateWithoutStudentsInput = {
+    id?: string
+    name: string
+    location?: string | null
+    fees?: number
+    rating?: number
+    overview?: string | null
+    averagePackage?: number
+    highestPackage?: number
+    courses?: CourseCreateNestedManyWithoutCollegeInput
+    reviews?: ReviewCreateNestedManyWithoutCollegeInput
+  }
+
+  export type CollegeUncheckedCreateWithoutStudentsInput = {
+    id?: string
+    name: string
+    location?: string | null
+    fees?: number
+    rating?: number
+    overview?: string | null
+    averagePackage?: number
+    highestPackage?: number
+    courses?: CourseUncheckedCreateNestedManyWithoutCollegeInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutCollegeInput
+  }
+
+  export type CollegeCreateOrConnectWithoutStudentsInput = {
+    where: CollegeWhereUniqueInput
+    create: XOR<CollegeCreateWithoutStudentsInput, CollegeUncheckedCreateWithoutStudentsInput>
+  }
+
+  export type CollegeUpsertWithoutStudentsInput = {
+    update: XOR<CollegeUpdateWithoutStudentsInput, CollegeUncheckedUpdateWithoutStudentsInput>
+    create: XOR<CollegeCreateWithoutStudentsInput, CollegeUncheckedCreateWithoutStudentsInput>
+    where?: CollegeWhereInput
+  }
+
+  export type CollegeUpdateToOneWithWhereWithoutStudentsInput = {
+    where?: CollegeWhereInput
+    data: XOR<CollegeUpdateWithoutStudentsInput, CollegeUncheckedUpdateWithoutStudentsInput>
+  }
+
+  export type CollegeUpdateWithoutStudentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    fees?: IntFieldUpdateOperationsInput | number
+    rating?: FloatFieldUpdateOperationsInput | number
+    overview?: NullableStringFieldUpdateOperationsInput | string | null
+    averagePackage?: IntFieldUpdateOperationsInput | number
+    highestPackage?: IntFieldUpdateOperationsInput | number
+    courses?: CourseUpdateManyWithoutCollegeNestedInput
+    reviews?: ReviewUpdateManyWithoutCollegeNestedInput
+  }
+
+  export type CollegeUncheckedUpdateWithoutStudentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    fees?: IntFieldUpdateOperationsInput | number
+    rating?: FloatFieldUpdateOperationsInput | number
+    overview?: NullableStringFieldUpdateOperationsInput | string | null
+    averagePackage?: IntFieldUpdateOperationsInput | number
+    highestPackage?: IntFieldUpdateOperationsInput | number
+    courses?: CourseUncheckedUpdateManyWithoutCollegeNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutCollegeNestedInput
+  }
+
+  export type CollegeCreateWithoutReviewsInput = {
+    id?: string
+    name: string
+    location?: string | null
+    fees?: number
+    rating?: number
+    overview?: string | null
+    averagePackage?: number
+    highestPackage?: number
+    courses?: CourseCreateNestedManyWithoutCollegeInput
+    students?: StudentCreateNestedManyWithoutCollegeInput
+  }
+
+  export type CollegeUncheckedCreateWithoutReviewsInput = {
+    id?: string
+    name: string
+    location?: string | null
+    fees?: number
+    rating?: number
+    overview?: string | null
+    averagePackage?: number
+    highestPackage?: number
+    courses?: CourseUncheckedCreateNestedManyWithoutCollegeInput
+    students?: StudentUncheckedCreateNestedManyWithoutCollegeInput
+  }
+
+  export type CollegeCreateOrConnectWithoutReviewsInput = {
+    where: CollegeWhereUniqueInput
+    create: XOR<CollegeCreateWithoutReviewsInput, CollegeUncheckedCreateWithoutReviewsInput>
+  }
+
+  export type CollegeUpsertWithoutReviewsInput = {
+    update: XOR<CollegeUpdateWithoutReviewsInput, CollegeUncheckedUpdateWithoutReviewsInput>
+    create: XOR<CollegeCreateWithoutReviewsInput, CollegeUncheckedCreateWithoutReviewsInput>
+    where?: CollegeWhereInput
+  }
+
+  export type CollegeUpdateToOneWithWhereWithoutReviewsInput = {
+    where?: CollegeWhereInput
+    data: XOR<CollegeUpdateWithoutReviewsInput, CollegeUncheckedUpdateWithoutReviewsInput>
+  }
+
+  export type CollegeUpdateWithoutReviewsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    fees?: IntFieldUpdateOperationsInput | number
+    rating?: FloatFieldUpdateOperationsInput | number
+    overview?: NullableStringFieldUpdateOperationsInput | string | null
+    averagePackage?: IntFieldUpdateOperationsInput | number
+    highestPackage?: IntFieldUpdateOperationsInput | number
+    courses?: CourseUpdateManyWithoutCollegeNestedInput
+    students?: StudentUpdateManyWithoutCollegeNestedInput
+  }
+
+  export type CollegeUncheckedUpdateWithoutReviewsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    fees?: IntFieldUpdateOperationsInput | number
+    rating?: FloatFieldUpdateOperationsInput | number
+    overview?: NullableStringFieldUpdateOperationsInput | string | null
+    averagePackage?: IntFieldUpdateOperationsInput | number
+    highestPackage?: IntFieldUpdateOperationsInput | number
+    courses?: CourseUncheckedUpdateManyWithoutCollegeNestedInput
+    students?: StudentUncheckedUpdateManyWithoutCollegeNestedInput
   }
 
   export type CourseCreateManyCollegeInput = {

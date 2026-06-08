@@ -7,30 +7,28 @@ dotenv.config();
 const app = express();
 
 app.use(cors());
-
 app.use(express.json());
+
+const collegeRoutes = require(
+  "./routes/collegeRoutes"
+);
 
 app.get("/", (_, res) => {
   res.json({
-    message: "College Discovery API"
+    message: "College Discovery API",
   });
 });
 
-const PORT = process.env.PORT || 5000;
-const collegeRoutes =
-  require(
-    "./routes/collegeRoutes"
-  );
-  app.use(
+app.use(
   "/api/colleges",
   collegeRoutes
 );
 
-app.use(
-  "/api/saved",
-  savedRoutes
-);
+const PORT =
+  process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on ${PORT}`);
+  console.log(
+    `Server running on ${PORT}`
+  );
 });

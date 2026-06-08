@@ -1,4 +1,4 @@
-import { College } from "../../types/college";
+import type { College } from "../../types/college";
 import { useCompareStore } from "../../store/compareStore";
 
 interface Props {

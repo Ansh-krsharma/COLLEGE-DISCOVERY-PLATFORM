@@ -1,25 +1,7 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { type College } from "../types/college.ts";
 
-interface College {
-  id: string;
-  name: string;
-  location: string;
-  fees: number;
-  rating: number;
-  averagePackage: number;
-  highestPackage: number;
-}
-
-persist(
-  (set) => ({
-     ...
-  }),
-  {
-    name: "compare-storage",
-  }
-)
-interface CompareState {
+interface CompareStore {
   colleges: College[];
 
   addCollege: (
@@ -29,29 +11,26 @@ interface CompareState {
   removeCollege: (
     id: string
   ) => void;
-
-  clearCompare: () => void;
 }
 
 export const useCompareStore =
-  create<CompareState>((set) => ({
+  create<CompareStore>((set) => ({
     colleges: [],
 
     addCollege: (college) =>
       set((state) => {
         const exists =
-          state.colleges.find(
+          state.colleges.some(
             (c) =>
               c.id === college.id
           );
 
-        if (exists)
-          return state;
-
         if (
+          exists ||
           state.colleges.length >= 3
-        )
+        ) {
           return state;
+        }
 
         return {
           colleges: [
@@ -68,9 +47,4 @@ export const useCompareStore =
             (c) => c.id !== id
           ),
       })),
-
-    clearCompare: () =>
-      set({
-        colleges: [],
-      }),
   }));

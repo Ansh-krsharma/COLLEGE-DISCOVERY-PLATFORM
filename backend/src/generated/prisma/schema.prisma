@@ -1,10 +1,28 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma" // optional, default is node_modules/@prisma/client
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model College {
+  id       String  @id @default(uuid())
+  name     String
+  location String?
+
+  fees     Int     @default(0)
+  rating   Float   @default(0)
+  overview String?
+
+  averagePackage Int @default(0)
+  highestPackage Int @default(0)
+
+  courses  Course[]
+  students Student[]
+  reviews  Review[]
 }
 
 model Course {
@@ -17,8 +35,9 @@ model Course {
 }
 
 model Student {
-  id        String  @id @default(uuid())
-  name      String
+  id   String @id @default(uuid())
+  name String
+
   collegeId String
   college   College @relation(fields: [collegeId], references: [id])
 }
@@ -31,14 +50,4 @@ model Review {
 
   collegeId String
   college   College @relation(fields: [collegeId], references: [id])
-}
-
-model College {
-  id       String  @id @default(uuid())
-  name     String
-  location String?
-
-  courses  Course[]
-  students Student[]
-  reviews  Review[]
 }
