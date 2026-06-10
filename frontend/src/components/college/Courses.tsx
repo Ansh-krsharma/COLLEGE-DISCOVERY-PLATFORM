@@ -1,42 +1,26 @@
-interface Course {
-  id: string;
-
-  name: string;
-
-  duration: string;
-}
+import type { Course } from "../../types/college";
 
 interface Props {
-  courses: Course[];
+  courses?: Course[];
 }
 
-export default function Courses({
-  courses,
-}: Props) {
+export default function Courses({ courses = [] }: Props) {
   return (
     <section className="mt-10">
-      <h2 className="text-2xl font-bold mb-3">
+      <h2 className="mb-3 text-2xl font-semibold text-slate-950 dark:text-white">
         Courses
       </h2>
 
-      <div className="bg-white rounded-xl shadow p-6">
-        {courses?.map(
-          (course) => (
-            <div
-              key={course.id}
-              className="border-b py-3"
-            >
-              <h4 className="font-semibold">
-                {course.name}
-              </h4>
+      <div className="grid gap-3 md:grid-cols-2">
+        {courses.map((course) => (
+          <div key={course.id || course.name} className="surface rounded-2xl p-5">
+            <h4 className="font-semibold text-slate-950 dark:text-white">
+              {course.name}
+            </h4>
 
-              <p>
-                Duration:
-                {course.duration}
-              </p>
-            </div>
-          )
-        )}
+            <p className="mt-1 text-sm text-muted">Duration: {course.duration}</p>
+          </div>
+        ))}
       </div>
     </section>
   );

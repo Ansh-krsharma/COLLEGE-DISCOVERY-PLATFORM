@@ -12,6 +12,8 @@ app.use(express.json());
 const collegeRoutes = require(
   "./routes/collegeRoutes"
 );
+const authRoutes = require("./routes/auth.routes");
+const savedRoutes = require("./routes/savedRoutes");
 
 app.get("/", (_, res) => {
   res.json({
@@ -23,6 +25,8 @@ app.use(
   "/api/colleges",
   collegeRoutes
 );
+app.use("/api/auth", authRoutes);
+app.use("/api/saved", savedRoutes);
 
 const PORT =
   process.env.PORT || 5000;

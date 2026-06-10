@@ -1,5 +1,8 @@
+import { locations, streams } from "../../utils/constants";
+
 interface Props {
   location: string;
+  type?: string;
 
   rating: string;
 
@@ -10,17 +13,23 @@ interface Props {
   setRating: (
     value: string
   ) => void;
+
+  setType?: (
+    value: string
+  ) => void;
 }
 
 export default function CollegeFilter({
   location,
+  type = "",
   rating,
   setLocation,
   setRating,
+  setType,
 }: Props) {
   return (
-    <div className="bg-white shadow rounded-xl p-4">
-      <h3 className="font-bold mb-3">
+    <div className="surface rounded-3xl p-5 shadow-sm">
+      <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">
         Filters
       </h3>
 
@@ -31,24 +40,40 @@ export default function CollegeFilter({
             e.target.value
           )
         }
-        className="border w-full p-2 mb-3"
+        className="mb-3 h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none dark:border-slate-700 dark:bg-slate-900"
       >
         <option value="">
           All Locations
         </option>
 
-        <option value="Delhi">
-          Delhi
-        </option>
-
-        <option value="Mumbai">
-          Mumbai
-        </option>
-
-        <option value="Bangalore">
-          Bangalore
-        </option>
+        {locations.map((item) => (
+          <option key={item} value={item}>
+            {item}
+          </option>
+        ))}
       </select>
+
+      {setType ? (
+        <select
+          value={type}
+          onChange={(e) =>
+            setType(
+              e.target.value
+            )
+          }
+          className="mb-3 h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none dark:border-slate-700 dark:bg-slate-900"
+        >
+          <option value="">
+            All Streams
+          </option>
+
+          {streams.map((item) => (
+            <option key={item} value={item}>
+              {item}
+            </option>
+          ))}
+        </select>
+      ) : null}
 
       <select
         value={rating}
@@ -57,7 +82,7 @@ export default function CollegeFilter({
             e.target.value
           )
         }
-        className="border w-full p-2"
+        className="h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm outline-none dark:border-slate-700 dark:bg-slate-900"
       >
         <option value="">
           All Ratings

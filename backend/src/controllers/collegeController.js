@@ -5,10 +5,11 @@ const prisma = new PrismaClient();
 exports.getColleges = async (req, res) => {
   try {
     const page = Number(req.query.page) || 1;
-    const limit = 12;
+    const limit = Number(req.query.limit) || 12;
 
     const search = req.query.search || "";
     const location = req.query.location || "";
+    const type = req.query.type || "";
     const rating = req.query.rating;
 
     const colleges = await prisma.college.findMany({
@@ -21,6 +22,7 @@ exports.getColleges = async (req, res) => {
           : undefined,
 
         location: location || undefined,
+        type: type || undefined,
 
         rating: rating
           ? {
@@ -31,6 +33,9 @@ exports.getColleges = async (req, res) => {
 
       skip: (page - 1) * limit,
       take: limit,
+      orderBy: {
+        rating: "desc",
+      },
     });
 
     res.json({

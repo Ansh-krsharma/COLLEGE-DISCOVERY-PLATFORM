@@ -30,7 +30,22 @@ exports.signup = async (req, res) => {
       },
     });
 
-    res.status(201).json(user);
+    const { password: _, ...safeUser } = user;
+
+    const token = jwt.sign(
+      {
+        userId: user.id,
+      },
+      process.env.JWT_SECRET || "dev-secret",
+      {
+        expiresIn: "7d",
+      }
+    );
+
+    res.status(201).json({
+      token,
+      user: safeUser,
+    });
   } catch (error) {
     res.status(500).json(error);
   }
@@ -62,11 +77,13 @@ exports.login = async (req, res) => {
     {
       userId: user.id,
     },
-    process.env.JWT_SECRET,
+    process.env.JWT_SECRET || "dev-secret",
     {
       expiresIn: "7d",
     }
   );
 
-  res.json({ token, user });
+  const { password: _, ...safeUser } = user;
+
+  res.json({ token, user: safeUser });
 };

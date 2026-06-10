@@ -29,6 +29,11 @@ export const router =
     },
 
     {
+      path: "/register",
+      element: <Signup />,
+    },
+
+    {
       path: "/colleges",
       element: <Colleges />,
     },
@@ -39,11 +44,24 @@ export const router =
     },
 
     {
+      path: "/colleges/:id",
+      element: <CollegesDetail />,
+    },
+
+    {
       path: "/compare",
       element: <Compare />,
     },
     {
       path: "/profile/saved",
+      element: (
+        <ProtectedRoute>
+          <Saved />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/saved",
       element: (
         <ProtectedRoute>
           <Saved />

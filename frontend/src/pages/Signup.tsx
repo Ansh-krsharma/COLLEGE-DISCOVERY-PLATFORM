@@ -1,121 +1,129 @@
-import React, { useState, type FormEvent } from 'react';
+import { useState } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import Navbar from "../components/layout/Navbar";
+import { useAuthStore } from "../store/authStore";
+import api from "../services/api";
 
-type SignupFormState = {
-  fullName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
-
-const Signup: React.FC = () => {
-  const [form, setForm] = useState<SignupFormState>({
-    fullName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+export default function Signup() {
+  const navigate = useNavigate();
+  const setAuth = useAuthStore((state) => state.setAuth);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
-  const [error, setError] = useState<string>('');
-  const [success, setSuccess] = useState<string>('');
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    setForm((current) => ({
+      ...current,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    setError('');
-    setSuccess('');
-
-    if (!form.fullName.trim() || !form.email.trim() || !form.password || !form.confirmPassword) {
-      setError('Please fill in all fields.');
-      return;
-    }
 
     if (form.password !== form.confirmPassword) {
-      setError('Passwords do not match.');
+      toast.error("Passwords do not match");
       return;
     }
 
-    if (form.password.length < 6) {
-      setError('Password must be at least 6 characters long.');
-      return;
-    }
+    setLoading(true);
+    try {
+      const res = await api.post("/auth/register", {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+      });
 
-    // Placeholder for signup API call
-    setSuccess('Signup successful. You can now log in.');
-    setForm({ fullName: '', email: '', password: '', confirmPassword: '' });
+      setAuth(res.data.token, res.data.user);
+      toast.success("Account created");
+      navigate("/colleges");
+    } catch {
+      toast.error("Unable to create account");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="signup-page" style={{ maxWidth: 420, margin: '0 auto', padding: 24 }}>
-      <h1 style={{ textAlign: 'center', marginBottom: 24 }}>Create an Account</h1>
-
-      <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 16 }}>
-        <label style={{ display: 'flex', flexDirection: 'column' }}>
-          Full Name
-          <input
-            type="text"
-            name="fullName"
-            value={form.fullName}
-            onChange={handleChange}
-            placeholder="John Doe"
-            required
-            style={{ padding: 12, borderRadius: 4, border: '1px solid #ccc' }}
-          />
-        </label>
-
-        <label style={{ display: 'flex', flexDirection: 'column' }}>
-          Email
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            placeholder="email@example.com"
-            required
-            style={{ padding: 12, borderRadius: 4, border: '1px solid #ccc' }}
-          />
-        </label>
-
-        <label style={{ display: 'flex', flexDirection: 'column' }}>
-          Password
-          <input
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            placeholder="Enter a password"
-            required
-            style={{ padding: 12, borderRadius: 4, border: '1px solid #ccc' }}
-          />
-        </label>
-
-        <label style={{ display: 'flex', flexDirection: 'column' }}>
-          Confirm Password
-          <input
-            type="password"
-            name="confirmPassword"
-            value={form.confirmPassword}
-            onChange={handleChange}
-            placeholder="Confirm your password"
-            required
-            style={{ padding: 12, borderRadius: 4, border: '1px solid #ccc' }}
-          />
-        </label>
-
-        {error && <p style={{ color: '#b00020', margin: 0 }}>{error}</p>}
-        {success && <p style={{ color: '#006400', margin: 0 }}>{success}</p>}
-
-        <button
-          type="submit"
-          style={{ padding: 12, borderRadius: 4, border: 'none', background: '#007bff', color: '#fff', cursor: 'pointer' }}
+    <>
+      <Navbar />
+      <main className="grid min-h-[calc(100vh-4rem)] place-items-center px-5 py-12">
+        <form
+          onSubmit={handleSubmit}
+          className="surface w-full max-w-md rounded-[2rem] p-7 shadow-xl shadow-blue-950/10"
         >
-          Sign Up
-        </button>
-      </form>
-    </div>
-  );
-};
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-blue-600 dark:text-blue-300">
+            Start your shortlist
+          </p>
+          <h1 className="font-display text-4xl text-slate-950 dark:text-white">
+            Register
+          </h1>
 
-export default Signup;
+          <div className="mt-8 space-y-4">
+            <input
+              name="name"
+              value={form.name}
+              placeholder="Full name"
+              className="h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-900"
+              onChange={handleChange}
+              required
+            />
+
+            <input
+              name="email"
+              value={form.email}
+              placeholder="Email"
+              type="email"
+              className="h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-900"
+              onChange={handleChange}
+              required
+            />
+
+            <input
+              name="password"
+              value={form.password}
+              placeholder="Password"
+              type="password"
+              className="h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-900"
+              onChange={handleChange}
+              minLength={6}
+              required
+            />
+
+            <input
+              name="confirmPassword"
+              value={form.confirmPassword}
+              placeholder="Confirm password"
+              type="password"
+              className="h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-900"
+              onChange={handleChange}
+              minLength={6}
+              required
+            />
+          </div>
+
+          <button
+            disabled={loading}
+            className="mt-6 h-12 w-full rounded-full bg-blue-600 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:opacity-60"
+          >
+            {loading ? "Creating..." : "Create account"}
+          </button>
+
+          <p className="mt-5 text-center text-sm text-muted">
+            Already have an account?{" "}
+            <Link to="/login" className="font-semibold text-blue-600">
+              Login
+            </Link>
+          </p>
+        </form>
+      </main>
+    </>
+  );
+}

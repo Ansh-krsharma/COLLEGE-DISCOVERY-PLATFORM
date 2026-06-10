@@ -7,6 +7,7 @@ import api from "../services/api";
 export default function useInfiniteColleges(
   search: string,
   location: string,
+  type: string,
   rating: string
 ) {
   return useInfiniteQuery({
@@ -14,6 +15,7 @@ export default function useInfiniteColleges(
       "colleges",
       search,
       location,
+      type,
       rating,
     ],
 
@@ -31,6 +33,7 @@ export default function useInfiniteColleges(
               search,
 
               location,
+              type,
 
               rating,
             },

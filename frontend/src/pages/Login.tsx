@@ -1,73 +1,88 @@
 import { useState } from "react";
-import axios from "axios";
+import type { FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import Navbar from "../components/layout/Navbar";
 import { useAuthStore } from "../store/authStore";
-import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 export default function Login() {
   const navigate = useNavigate();
+  const setAuth = useAuthStore((state) => state.setAuth);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const setAuth =
-    useAuthStore(
-      (state) => state.setAuth
-    );
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    setLoading(true);
 
-  const [email, setEmail] =
-    useState("");
+    try {
+      const res = await api.post("/auth/login", {
+        email,
+        password,
+      });
 
-  const [password, setPassword] =
-    useState("");
-
-  const handleSubmit = async (
-    e: React.FormEvent
-  ) => {
-    e.preventDefault();
-
-    const res =
-      await axios.post(
-        "http://localhost:5000/api/auth/login",
-        {
-          email,
-          password,
-        }
-      );
-
-    setAuth(
-      res.data.token,
-      res.data.user
-    );
-
-    navigate("/");
+      setAuth(res.data.token, res.data.user);
+      toast.success("Welcome back");
+      navigate("/colleges");
+    } catch {
+      toast.error("Unable to log in with those details");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center">
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-4 w-80"
-      >
-        <input
-          placeholder="Email"
-          className="border w-full p-2"
-          onChange={(e) =>
-            setEmail(e.target.value)
-          }
-        />
+    <>
+      <Navbar />
+      <main className="grid min-h-[calc(100vh-4rem)] place-items-center px-5 py-12">
+        <form
+          onSubmit={handleSubmit}
+          className="surface w-full max-w-md rounded-[2rem] p-7 shadow-xl shadow-blue-950/10"
+        >
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-blue-600 dark:text-blue-300">
+            Welcome back
+          </p>
+          <h1 className="font-display text-4xl text-slate-950 dark:text-white">
+            Login
+          </h1>
 
-        <input
-          placeholder="Password"
-          type="password"
-          className="border w-full p-2"
-          onChange={(e) =>
-            setPassword(
-              e.target.value
-            )
-          }
-        />
+          <div className="mt-8 space-y-4">
+            <input
+              value={email}
+              placeholder="Email"
+              type="email"
+              className="h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-900"
+              onChange={(event) => setEmail(event.target.value)}
+              required
+            />
 
-        <button className="bg-blue-600 text-white p-2 w-full">
-          Login
-        </button>
-      </form>
-    </div>
+            <input
+              value={password}
+              placeholder="Password"
+              type="password"
+              className="h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-900"
+              onChange={(event) => setPassword(event.target.value)}
+              required
+            />
+          </div>
+
+          <button
+            disabled={loading}
+            className="mt-6 h-12 w-full rounded-full bg-blue-600 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:opacity-60"
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
+
+          <p className="mt-5 text-center text-sm text-muted">
+            New here?{" "}
+            <Link to="/register" className="font-semibold text-blue-600">
+              Create an account
+            </Link>
+          </p>
+        </form>
+      </main>
+    </>
   );
 }

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap");
 
 html,
 body,
@@ -14,4 +15,36 @@ body {
     Inter,
     system-ui,
     sans-serif;
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.dark body {
+  background: #020617;
+  color: #f8fafc;
+}
+
+.font-display {
+  font-family:
+    Fraunces,
+    Georgia,
+    serif;
+}
+
+.surface {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #e2e8f0;
+}
+
+.dark .surface {
+  background: rgba(15, 23, 42, 0.9);
+  border-color: #1e293b;
+}
+
+.text-muted {
+  color: #64748b;
+}
+
+.dark .text-muted {
+  color: #94a3b8;
 }
