@@ -1,31 +1,27 @@
+import React from "react";
 import { Heart } from "lucide-react";
-import toast from "react-hot-toast";
-import { useSavedStore } from "../../store/savedStore";
+import { cn } from "@/lib/utils";
+import { useSavedColleges } from "../../hooks/useSavedColleges";
 
-interface Props {
-  id: string;
-}
+export default function SaveButton({ collegeId, className }) {
+    const { isSaved, toggleSave } = useSavedColleges();
+    const saved = isSaved(collegeId);
 
-export default function SaveButton({ id }: Props) {
-  const toggleSaved = useSavedStore((state) => state.toggleSaved);
-  const isSaved = useSavedStore((state) => state.isSaved(id));
-
-  const handleClick = () => {
-    toggleSaved(id);
-    toast.success(isSaved ? "Removed from saved colleges" : "Added to saved colleges");
-  };
-
-  return (
-    <button
-      onClick={handleClick}
-      className={`inline-flex h-10 flex-1 items-center justify-center gap-2 rounded-full border px-4 text-sm font-semibold transition ${
-        isSaved
-          ? "border-rose-200 bg-rose-50 text-rose-600 dark:border-rose-900 dark:bg-rose-950/40"
-          : "border-slate-200 text-slate-700 hover:border-rose-200 hover:text-rose-600 dark:border-slate-700 dark:text-slate-200"
-      }`}
-    >
-      <Heart size={16} fill={isSaved ? "currentColor" : "none"} />
-      {isSaved ? "Saved" : "Save"}
-    </button>
-  );
+    return (
+        <button
+            onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleSave(collegeId);
+            }}
+            aria-label={saved ? "Remove from saved" : "Save college"}
+            className={cn(
+                "w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-md",
+                saved ? "bg-destructive/90 text-white scale-105" : "bg-white/80 text-foreground hover:bg-white",
+                className
+            )}
+        >
+            <Heart className={cn("w-4 h-4", saved && "fill-current")} />
+        </button>
+    );
 }

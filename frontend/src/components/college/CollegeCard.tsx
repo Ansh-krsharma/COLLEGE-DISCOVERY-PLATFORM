@@ -1,74 +1,69 @@
+import React from "react";
 import { Link } from "react-router-dom";
-import { MapPin, Star } from "lucide-react";
-import type { College } from "../../types/college";
-import CompareButton from "../compare/CompareButton";
-import SaveButton from "../saved/SaveButton";
-import { formatCurrency } from "../../utils/formatCurrency";
+import { motion } from "framer-motion";
+import { MapPin, Star, Briefcase } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { inr, TYPE_LABELS } from "../../lib/format";
+import SaveButton from "./SaveButton";
 
-interface Props {
-  college: College;
-}
+export default function CollegeCard({ college, index = 0 }) {
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.05 }}
+            className="group bg-card border border-border rounded-2xl overflow-hidden hover:shadow-lg transition-shadow"
+        >
+            <div className="relative h-44 overflow-hidden">
+                <img
+                    src={college.image_url || "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=400&q=80"}
+                    alt={college.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                <SaveButton collegeId={college.id} className="absolute top-3 right-3 w-8 h-8" />
+                {college.type && (
+                    <Badge className="absolute bottom-3 left-3 bg-white/90 text-foreground hover:bg-white border-0 text-xs">
+                        {TYPE_LABELS[college.type] || college.type}
+                    </Badge>
+                )}
+            </div>
 
-export default function CollegeCard({ college }: Props) {
-  return (
-    <article className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-950/10 dark:border-slate-800 dark:bg-slate-900">
-      <div className="relative h-48 overflow-hidden">
-        <img
-          src={
-            college.imageUrl ||
-            "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80"
-          }
-          alt={college.name}
-          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-        />
-        <div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-700 backdrop-blur dark:bg-slate-950/80 dark:text-slate-100">
-          {college.type || "College"}
-        </div>
-      </div>
+            <div className="p-4">
+                <h3 className="font-display text-base font-semibold text-foreground leading-snug line-clamp-2 mb-1">
+                    {college.name}
+                </h3>
+                {college.location && (
+                    <p className="flex items-center gap-1 text-xs text-muted-foreground mb-3">
+                        <MapPin className="w-3 h-3 shrink-0" /> {college.location}
+                    </p>
+                )}
 
-      <div className="p-5">
-        <div className="mb-3 flex items-start justify-between gap-3">
-          <div>
-            <h2 className="line-clamp-2 text-xl font-semibold leading-snug text-slate-950 dark:text-white">
-              {college.name}
-            </h2>
-            <p className="mt-2 flex items-center gap-1.5 text-sm text-muted">
-              <MapPin size={15} />
-              {college.location || "India"}
-            </p>
-          </div>
-          <div className="flex shrink-0 items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-sm font-semibold text-amber-700 dark:bg-amber-950/40 dark:text-amber-300">
-            <Star size={14} fill="currentColor" />
-            {college.rating}
-          </div>
-        </div>
+                <div className="flex items-center justify-between text-xs text-muted-foreground border-t border-border pt-3">
+                    {college.rating != null && (
+                        <span className="flex items-center gap-1">
+                            <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
+                            {college.rating.toFixed(1)}
+                        </span>
+                    )}
+                    {college.average_package != null && (
+                        <span className="flex items-center gap-1">
+                            <Briefcase className="w-3 h-3" />
+                            {inr(college.average_package)}/yr
+                        </span>
+                    )}
+                    {college.fees != null && (
+                        <span>{inr(college.fees)}/yr</span>
+                    )}
+                </div>
 
-        <div className="grid grid-cols-2 gap-3 text-sm">
-          <div className="rounded-2xl bg-slate-50 p-3 dark:bg-slate-950">
-            <p className="text-muted">Annual fees</p>
-            <p className="mt-1 font-semibold text-slate-950 dark:text-white">
-              {formatCurrency(college.fees)}
-            </p>
-          </div>
-          <div className="rounded-2xl bg-slate-50 p-3 dark:bg-slate-950">
-            <p className="text-muted">Avg package</p>
-            <p className="mt-1 font-semibold text-slate-950 dark:text-white">
-              {formatCurrency(college.averagePackage)}
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-5 flex flex-wrap gap-2">
-          <Link
-            to={`/colleges/${college.id}`}
-            className="inline-flex h-10 flex-1 items-center justify-center rounded-full bg-blue-600 px-4 text-sm font-semibold text-white transition hover:bg-blue-700"
-          >
-            View
-          </Link>
-          <CompareButton college={college} />
-          <SaveButton id={college.id} />
-        </div>
-      </div>
-    </article>
-  );
+                <Link
+                    to={`/colleges/${college.id}`}
+                    className="mt-3 block text-center text-xs font-medium bg-primary text-primary-foreground rounded-lg py-2 hover:opacity-90 transition-opacity"
+                >
+                    View Details
+                </Link>
+            </div>
+        </motion.div>
+    );
 }
